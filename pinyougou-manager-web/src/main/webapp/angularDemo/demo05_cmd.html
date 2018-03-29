@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo05_cmd</title>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript">
+        var module = angular.module("myModule",[]);
+        module.controller('myController',function($scope){
+            $scope.add=function(){
+                $scope.z= parseInt($scope.x)+parseInt($scope.y);
+            }
+        })
+    </script>
+</head>
+<body ng-app="myModule" ng-controller="myController">
+<input type="text" ng-model="x"><br>
+<input type="text" ng-model="y"><br>
+<button ng-click="add()">执行运算</button>
+相加结果:{{z}}
+</body>
+</html>

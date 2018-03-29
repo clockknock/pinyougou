@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo05_cmd</title>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript">
+        var module = angular.module("myModule",[]);
+        module.controller('myController',function($scope){
+             $scope.arr=[1012,11,13,14];
+
+        })
+    </script>
+</head>
+<body ng-app="myModule" ng-controller="myController">
+<table>
+    <tr ng-repeat="num in arr">
+        <td>{{num}}</td>
+    </tr>
+</table>
+</body>
+</html>

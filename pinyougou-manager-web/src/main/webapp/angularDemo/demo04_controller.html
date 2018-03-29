@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo04_controller</title>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript">
+        var module = angular.module("myModule",[]);
+        module.controller('myController',function($scope){
+            $scope.add=function(){
+                return parseInt($scope.x)+parseInt($scope.y);
+            }
+        })
+    </script>
+</head>
+<body ng-app="myModule" ng-controller="myController">
+<input type="text" ng-model="x"><br>
+<input type="text" ng-model="y"><br>
+相加结果:{{add()}}
+</body>
+</html>

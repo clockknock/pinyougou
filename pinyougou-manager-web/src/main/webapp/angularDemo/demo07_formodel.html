@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo05_cmd</title>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript">
+        var module = angular.module("myModule", []);
+        module.controller('myController', function ($scope, $http) {
+            $http.get("mans.json").success(
+                function (response) {
+                    $scope.mans = response;
+                }
+            )
+
+        })
+    </script>
+</head>
+<body ng-app="myModule" ng-controller="myController">
+<table>
+    <tr ng-repeat="p in mans">
+        <td>{{p.name}}</td>
+        <td>{{p.age}}</td>
+        <td>{{p.height}}</td>
+    </tr>
+</table>
+</body>
+</html>
