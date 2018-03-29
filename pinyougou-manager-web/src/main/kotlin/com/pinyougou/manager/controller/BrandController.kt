@@ -18,7 +18,7 @@ import priv.zhong.bean.Result
 @RequestMapping("/brand")
 class BrandController {
     @Reference
-    lateinit var brandService: BrandService
+    private lateinit var brandService: BrandService
 
     @RequestMapping("/findAll")
     fun findAll(): List<TbBrand> {
@@ -40,6 +40,21 @@ class BrandController {
         } catch (e: Exception) {
             result.isStatus=false
             result.msg="添加失败"
+            e.printStackTrace()
+        }
+        return result
+    }
+    @RequestMapping("/update")
+    fun update(@RequestBody brand: TbBrand):Result{
+        val result = Result()
+        try {
+            brandService.update(brand)
+            result.isStatus=true
+            result.msg="修改成功"
+        } catch (e: Exception) {
+            result.isStatus=false
+            result.msg="修改失败"
+            e.printStackTrace()
         }
         return result
     }

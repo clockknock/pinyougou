@@ -15,10 +15,18 @@ import priv.zhong.bean.PageResult
  */
 @Service
 class BrandServiceImpl : BrandService {
+    override fun update(brand: TbBrand) {
+        brandMapper.updateByPrimaryKey(brand)
+    }
+
     override fun add(brand: TbBrand) {
         brandMapper.insert(brand)
     }
 
+    /**
+     * @param pageNum 当前页数
+     * @param pageSize 页面大小
+     */
     override fun findPage(pageNum: Int, pageSize: Int): PageResult {
         PageHelper.startPage(pageNum,pageSize)
         val page = brandMapper.selectByExample(null) as Page

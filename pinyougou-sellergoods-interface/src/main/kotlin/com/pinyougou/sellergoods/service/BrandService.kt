@@ -13,4 +13,6 @@ interface BrandService {
     fun findPage(pageNum:Int,pageSize:Int): PageResult
 
     fun add(brand :TbBrand)
+
+    fun update(brand: TbBrand)
 }
