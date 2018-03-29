@@ -9,5 +9,8 @@ import priv.zhong.bean.PageResult
  */
 interface BrandService {
     fun findAll(): List<TbBrand>
+
     fun findPage(pageNum:Int,pageSize:Int): PageResult
+
+    fun add(brand :TbBrand)
 }
