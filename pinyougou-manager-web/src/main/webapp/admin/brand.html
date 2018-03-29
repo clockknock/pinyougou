@@ -46,11 +46,12 @@
 
             //将paginationConf的页数/页大小封装调用分页搜索
             $scope.reloadList = function () {
-                $scope.search($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage)
+                $scope.search($scope.paginationConf.currentPage,
+                    $scope.paginationConf.itemsPerPage)
             };
 
             //分页搜索
-            $scope.search = function (page, size) {
+            $scope.findPage = function (page, size) {
                 $http.get("../brand/findPage.do?pageNum=" + page + "&pageSize=" + size).success(
                     function (response) {
                         $scope.brandList = response.rows;
@@ -59,6 +60,9 @@
                 )
             };
 
+            $scope.clearBrand = function () {
+                $scope.brand = {};
+            };
             //新增商品
             $scope.save = function () {
                 if ($scope.brand.id == null) {
@@ -75,14 +79,51 @@
                         }
                     )
                 }
-                $scope.brand = {};
+                $scope.clearBrand();
 
             };
 
-            //修改商品
+            //修改商品--将之前请求下来的brandList中对应角标的brand放到$scope
             $scope.currentBrand = function (index) {
                 $scope.brand = $scope.brandList[index];
-            }
+            };
+
+            //删除商品用的ids记录
+            $scope.deleIds = [];
+            //点击checkbox记录删除的id
+            $scope.updateDeleteArrs = function (node, id) {
+                if (node.checked) {
+                    $scope.deleIds.push(id);
+                } else {
+                    var indexOf = $scope.deleIds.indexOf(id);
+                    $scope.deleIds.splice(indexOf, 1);
+                }
+            };
+            //删除记录ids对应的品牌
+            $scope.deleteBrand = function () {
+                if (confirm("确定要删除品牌吗?")) {
+                    $http.get("../brand/delete.do?ids=" + $scope.deleIds).success(
+                        function (response) {
+                            console.log(response.msg);
+                            $scope.reloadList();
+                        }
+                    )
+                }
+            };
+
+            //条件查询的实体对象
+            $scope.searchEntity={};
+
+            //搜索
+            $scope.search = function (page, size) {
+                $http.post("../brand/search.do?pageNum=" + page + "&pageSize=" +
+                    size,$scope.searchEntity).success(
+                    function (response) {
+                        $scope.brandList = response.rows;
+                        $scope.paginationConf.totalItems = response.total;
+                    }
+                )
+            };
 
         })
 
@@ -106,9 +147,11 @@
             <div class="form-group form-inline">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
-                            data-target="#editModal"><i class="fa fa-file-o"></i> 新建
+                            data-target="#editModal" ng-click="clearBrand()"><i
+                            class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除"><i
+                    <button type="button" class="btn btn-default" ng-click="deleteBrand()"
+                            title="删除"><i
                             class="fa fa-trash-o"></i> 删除
                     </button>
                     <button type="button" class="btn btn-default" title="刷新"
@@ -119,7 +162,9 @@
         </div>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-
+                品牌名: <input type="text" ng-model="searchEntity.name">
+                品牌首字母:<input type="text" ng-model="searchEntity.firstChar">
+                <button  class="btn btn-default" title="搜索" ng-click="reloadList()">搜索</button>
             </div>
         </div>
         <!--工具栏/-->
@@ -140,7 +185,7 @@
             <tbody>
 
             <tr ng-repeat="brand in brandList">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" ng-click="updateDeleteArrs($event.target,brand.id)"></td>
                 <td>{{brand.id}}</td>
                 <td>{{brand.name}}</td>
                 <td>{{brand.firstChar}}</td>
@@ -157,7 +202,6 @@
         <!--数据列表/-->
 
         <tm-pagination conf="paginationConf"></tm-pagination>
-
     </div>
     <!-- 数据表格 /-->
 
@@ -191,7 +235,9 @@
                 <button class="btn btn-success" data-dismiss="modal" aria-hidden="true"
                         ng-click="save()">保存
                 </button>
-                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <button class="btn btn-default" data-dismiss="modal" ng-click="clearBrand()"
+                        aria-hidden="true">关闭
+                </button>
             </div>
         </div>
     </div>

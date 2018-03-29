@@ -31,32 +31,42 @@ class BrandController {
     }
 
     @RequestMapping("/add")
-    fun add(@RequestBody brand: TbBrand): Result{
-        val result = Result()
-        try {
+    fun add(@RequestBody brand: TbBrand): Result {
+        return try {
             brandService.add(brand)
-            result.isStatus=true
-            result.msg="添加成功"
+            Result(true, "添加成功")
         } catch (e: Exception) {
-            result.isStatus=false
-            result.msg="添加失败"
             e.printStackTrace()
+            Result(false, "添加失败")
         }
-        return result
     }
+
     @RequestMapping("/update")
-    fun update(@RequestBody brand: TbBrand):Result{
-        val result = Result()
-        try {
+    fun update(@RequestBody brand: TbBrand): Result {
+        return try {
             brandService.update(brand)
-            result.isStatus=true
-            result.msg="修改成功"
+            Result(true, "修改成功")
         } catch (e: Exception) {
-            result.isStatus=false
-            result.msg="修改失败"
             e.printStackTrace()
+            Result(false, "修改失败")
         }
-        return result
+
+    }
+
+    @RequestMapping("/delete")
+    fun delete(ids: Array<Long>): Result {
+        return try {
+            brandService.delete(ids)
+            Result(true, "删除成功")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result(false, "删除失败")
+        }
+    }
+
+    @RequestMapping("/search")
+    fun search(@RequestBody brand: TbBrand, pageNum: Int, pageSize: Int): PageResult {
+        return brandService.findPage(brand, pageNum, pageSize)
     }
 
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo05_cmd</title>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript">
+        var module = angular.module("myModule",[]);
+        module.controller('myController',function($scope){
+             $scope.arr=[1012,11,13,14];
+
+             $scope.updateDeleteArrs=function(node,id){
+                console.log(node.checked);
+             }
+        })
+    </script>
+</head>
+<body ng-app="myModule" ng-controller="myController">
+<table>
+    <tr ng-repeat="id in arr">
+        <td><input type="checkbox" ng-click="updateDeleteArrs($event.target,id)"></td>
+        <td>{{id}}</td>
+    </tr>
+</table>
+</body>
+</html>
