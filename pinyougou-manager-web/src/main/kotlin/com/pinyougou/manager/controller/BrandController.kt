@@ -5,6 +5,7 @@ import com.pinyougou.pojo.TbBrand
 import com.pinyougou.sellergoods.service.BrandService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import priv.zhong.bean.PageResult
 
 
 /**
@@ -13,13 +14,18 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/brand")
-class BrandController{
+class BrandController {
     @Reference
     lateinit var brandService: BrandService
 
     @RequestMapping("/findAll")
     fun findAll(): List<TbBrand> {
         return brandService.findAll()
+    }
+
+    @RequestMapping("findPage")
+    fun findPage(pageNum: Int, pageSize: Int): PageResult {
+        return brandService.findPage(pageNum, pageSize)
     }
 
 }

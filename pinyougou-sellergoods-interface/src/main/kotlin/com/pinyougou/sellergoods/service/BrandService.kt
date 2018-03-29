@@ -1,6 +1,7 @@
 package com.pinyougou.sellergoods.service
 
 import com.pinyougou.pojo.TbBrand
+import priv.zhong.bean.PageResult
 
 /**
  * @author 钟未鸣
@@ -8,4 +9,5 @@ import com.pinyougou.pojo.TbBrand
  */
 interface BrandService {
     fun findAll(): List<TbBrand>
+    fun findPage(pageNum:Int,pageSize:Int): PageResult
 }

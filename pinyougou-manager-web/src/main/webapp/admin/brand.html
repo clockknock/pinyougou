@@ -21,14 +21,41 @@
     <!-- 分页组件结束 -->
 
     <script type="text/javascript">
-        var app = angular.module("pinyougou",[]);
-        app.controller('brandController',function($scope,$http){
+        var app = angular.module("pinyougou", ['pagination']);
+        app.controller('brandController', function ($scope, $http) {
             //查询所有商品列表
-            $http.get("../brand/findAll.do").success(
-                function(response){
-                    $scope.grandList=response;
+            $scope.findAll = function () {
+                $http.get("../brand/findAll.do").success(
+                    function (response) {
+                        $scope.brandList = response;
+                    }
+                );
+            };
+
+            //分页控件配置currentPage:当前页   totalItems :总记录数  itemsPerPage:每页记录数
+            //  perPageOptions :分页选项  onChange:当页码变更后自动触发的方法
+            $scope.paginationConf = {
+                currentPage: 1,
+                totalItems: 10,
+                itemsPerPage: 10,
+                perPageOptions: [10, 20, 30, 40, 50],
+                onChange: function () {
+                    $scope.reloadList();
                 }
-            );
+            };
+
+            $scope.reloadList = function () {
+                $scope.search($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage)
+            }
+
+            $scope.search = function (page, size) {
+                $http.get("../brand/findPage.do?pageNum=" + page + "&pageSize=" + size).success(
+                    function (response) {
+                        $scope.brandList = response.rows;
+                        $scope.paginationConf.totalItems = response.total;
+                    }
+                )
+            }
 
         })
 
@@ -36,7 +63,7 @@
 
 </head>
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou"
-      ng-controller="brandController">
+      ng-controller="brandController" ng-init="findAll()">
 <!-- .box-body -->
 <div class="box-header with-border">
     <h3 class="box-title">品牌管理</h3>
@@ -84,19 +111,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>联想</td>
-                <td>L</td>
-                <td class="text-center">
-                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal"
-                            data-target="#editModal">修改
-                    </button>
-                </td>
-            </tr>
 
-            <tr ng-repeat="brand in grandList" >
+            <tr ng-repeat="brand in brandList">
                 <td><input type="checkbox"></td>
                 <td>{{brand.id}}</td>
                 <td>{{brand.name}}</td>
@@ -108,10 +124,12 @@
                 </td>
             </tr>
 
-
             </tbody>
+
         </table>
         <!--数据列表/-->
+
+        <tm-pagination conf="paginationConf"></tm-pagination>
 
 
     </div>
