@@ -7,9 +7,13 @@ app.controller("baseController",function($scope){
         itemsPerPage: 10,
         perPageOptions: [10, 20, 30, 40, 50],
         onChange: function () {
-            $scope.reloadList();
+            // console.log("onChange");
+            // $scope.reloadList();
         }
     };
+    $scope.$watch("paginationConf.currentPage",function(){
+        $scope.reloadList();
+    });
 
     //将paginationConf的页数/页大小封装调用分页搜索
     $scope.reloadList = function () {

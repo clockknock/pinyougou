@@ -8,6 +8,15 @@ import org.junit.Test
  */
 class TestFunction{
     @Test
+    fun testList(){
+        val list = ArrayList<Int>(10)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        println(list.size)
+    }
+
+    @Test
     fun testIsNotEmpty(){
         val s=" "
       println(s.isNotEmpty())
