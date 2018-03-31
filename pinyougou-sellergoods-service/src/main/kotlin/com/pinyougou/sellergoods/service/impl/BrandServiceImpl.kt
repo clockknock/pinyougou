@@ -15,7 +15,7 @@ import priv.zhong.bean.PageResult
  * @date 2018/3/28
  */
 @Service
-class BrandServiceImpl : BrandService {
+class BrandServiceImpl : BrandService<TbBrand> {
     override fun findPage(brand: TbBrand, pageNum: Int, pageSize: Int): PageResult {
         PageHelper.startPage(pageNum, pageSize)
         val example = TbBrandExample()
