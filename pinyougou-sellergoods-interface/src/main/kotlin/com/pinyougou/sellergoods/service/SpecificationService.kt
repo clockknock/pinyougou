@@ -30,11 +30,10 @@ interface SpecificationService {
 
     /**
      * 增加
-     *//*
+     */
     fun add(specification: Specification)
 
 
-    */
     /**
      * 修改
      *//*

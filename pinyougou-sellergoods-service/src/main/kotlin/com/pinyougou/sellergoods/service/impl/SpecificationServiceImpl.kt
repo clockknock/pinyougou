@@ -20,6 +20,14 @@ import java.util.ArrayList
  */
 @Service
 class SpecificationServiceImpl : SpecificationService {
+    override fun add(specification: Specification) {
+        specificationMapper.insert(specification.specification)
+        specification.specificationOptionList?.forEach {
+            it.specId=specification.specification?.id
+            specificationOptionMapper.insert(it)
+        }
+    }
+
     override fun findPage(specification: TbSpecification, pageNum: Int, pageSize: Int): PageResult {
         PageHelper.startPage(pageNum, pageSize)
 

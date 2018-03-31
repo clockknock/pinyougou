@@ -41,7 +41,7 @@ app.controller('specificationController', function ($scope, $controller, specifi
         }
         serviceObject.success(
             function (response) {
-                if (response.success) {
+                if (response.status) {
                     //重新查询
                     $scope.reloadList();//重新加载
                 } else {
@@ -81,6 +81,9 @@ app.controller('specificationController', function ($scope, $controller, specifi
 
     //增加规格选项行
     $scope.addTableRow = function () {
+        if($scope.entity.specificationOptionList===undefined){
+            $scope.entity.specificationOptionList=[];
+        }
         $scope.entity.specificationOptionList.push({});
     };
 

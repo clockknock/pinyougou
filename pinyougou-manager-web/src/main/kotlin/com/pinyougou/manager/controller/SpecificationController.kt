@@ -4,10 +4,12 @@ import com.alibaba.dubbo.config.annotation.Reference
 import com.github.pagehelper.Page
 import org.springframework.web.bind.annotation.RequestMapping
 import com.pinyougou.pojo.TbSpecification
+import com.pinyougou.pojogroup.Specification
 import com.pinyougou.sellergoods.service.SpecificationService
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import priv.zhong.bean.PageResult
+import priv.zhong.bean.Result
 
 
 /**
@@ -42,6 +44,17 @@ class SpecificationController {
     @RequestMapping("/search")
     fun findPage(@RequestBody specification: TbSpecification, page:Int,rows:Int):PageResult{
         return service.findPage(specification,page,rows)
+    }
+
+    @RequestMapping("/add")
+    fun save(@RequestBody specification: Specification):Result{
+        return try {
+            service.add(specification)
+            Result(true,"添加成功")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result(false,"添加失败")
+        }
     }
 
 }
