@@ -36,27 +36,17 @@ interface SpecificationService {
 
     /**
      * 修改
-     *//*
+     */
     fun update(specification: Specification)
 
 
-    */
-    /**
-     * 根据ID获取实体
-     * @param id
-     * @return
-     *//*
-    fun findOne(id: Long?): Specification
-
-
-    */
     /**
      * 批量删除
      * @param ids
-     *//*
+     */
     fun delete(ids: Array<Long>)
 
-    */
+
     /**
      * 分页
      * @param pageNum 当前页 码

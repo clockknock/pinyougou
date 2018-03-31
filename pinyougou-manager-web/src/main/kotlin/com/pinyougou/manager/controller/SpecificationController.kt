@@ -37,23 +37,45 @@ class SpecificationController {
     }
 
     @RequestMapping("/findPage")
-    fun findPage(page:Int,rows:Int):PageResult{
-        return service.findPage(page,rows)
+    fun findPage(page: Int, rows: Int): PageResult {
+        return service.findPage(page, rows)
     }
 
     @RequestMapping("/search")
-    fun findPage(@RequestBody specification: TbSpecification, page:Int,rows:Int):PageResult{
-        return service.findPage(specification,page,rows)
+    fun findPage(@RequestBody specification: TbSpecification, page: Int, rows: Int): PageResult {
+        return service.findPage(specification, page, rows)
     }
 
     @RequestMapping("/add")
-    fun save(@RequestBody specification: Specification):Result{
+    fun save(@RequestBody specification: Specification): Result {
         return try {
             service.add(specification)
-            Result(true,"添加成功")
+            Result(true, "添加成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            Result(false,"添加失败")
+            Result(false, "添加失败")
+        }
+    }
+
+    @RequestMapping("/update")
+    fun update(@RequestBody specification: Specification): Result {
+        return try {
+            service.update(specification)
+            Result(true, "修改成功")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result(false, "修改失败")
+        }
+    }
+
+    @RequestMapping("/delete")
+    fun delete(ids: Array<Long>): Result {
+        return try {
+            service.delete(ids)
+            Result(true, "删除成功")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result(false, "删除失败")
         }
     }
 
