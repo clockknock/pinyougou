@@ -28,4 +28,6 @@ interface BrandService {
      * @param pageSize 页面大小
      */
     fun findPage(brand: TbBrand, pageNum:Int,pageSize:Int): PageResult
+
+    fun findBrandList(): List<Map<*,*>>
 }

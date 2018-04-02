@@ -79,4 +79,9 @@ class SpecificationController {
         }
     }
 
+    @RequestMapping("/findSpecList")
+    fun findSpecList():List<Map<*,*>>{
+        return service.findSpecList()
+    }
+
 }

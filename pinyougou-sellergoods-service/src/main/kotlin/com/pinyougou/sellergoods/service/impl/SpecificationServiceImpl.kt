@@ -20,6 +20,10 @@ import java.util.ArrayList
  */
 @Service
 class SpecificationServiceImpl : SpecificationService {
+    override fun findSpecList(): List<Map<*, *>> {
+        return specificationMapper.findSpecList()
+    }
+
     override fun delete(ids: Array<Long>) {
         for (id in ids) {
             specificationMapper.deleteByPrimaryKey(id)

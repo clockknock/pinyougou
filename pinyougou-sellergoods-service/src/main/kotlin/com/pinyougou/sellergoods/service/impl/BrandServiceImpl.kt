@@ -16,6 +16,10 @@ import priv.zhong.bean.PageResult
  */
 @Service
 class BrandServiceImpl : BrandService {
+    override fun findBrandList(): List<Map<*, *>> {
+        return brandMapper.findBrandList()
+    }
+
     override fun findPage(brand: TbBrand, pageNum: Int, pageSize: Int): PageResult {
         PageHelper.startPage(pageNum, pageSize)
         val example = TbBrandExample()
@@ -59,6 +63,7 @@ class BrandServiceImpl : BrandService {
     override fun findAll(): List<TbBrand> {
         return brandMapper.selectByExample(null)
     }
+
 
 
     @Autowired

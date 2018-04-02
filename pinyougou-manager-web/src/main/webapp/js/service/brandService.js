@@ -18,5 +18,15 @@ app.service('brandService', function ($http) {
     this.search=function(page,size,searchEntity){
         return $http.post("../brand/search.do?pageNum=" + page + "&pageSize=" +
             size, searchEntity);
+    };
+
+    //下拉列表数据
+    this.selectOptionList=function(){
+        return $http.get('../brand/selectOptionList.do');
     }
+
+    this.findBrandList = function(){
+        return $http.post("../brand/findBrandList.do")
+    }
+
 });

@@ -69,4 +69,9 @@ class BrandController {
         return brandService.findPage(brand, pageNum, pageSize)
     }
 
+    @RequestMapping("/findBrandList")
+    fun findBrandList(): List<Map<*, *>> {
+    return brandService.findBrandList()
+    }
+
 }

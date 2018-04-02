@@ -19,13 +19,11 @@ interface SpecificationService {
     fun findAll(): List<TbSpecification>
 
 
-
     /**
      * 返回分页列表
      * @return
      */
     fun findPage(pageNum: Int, pageSize: Int): PageResult
-
 
 
     /**
@@ -56,6 +54,6 @@ interface SpecificationService {
     fun findPage(specification: TbSpecification, pageNum: Int, pageSize: Int): PageResult
 
 
-//    fun selectOptionList(): List<Map<*, *>>
+    fun findSpecList(): List<Map<*, *>>
 
 }
