@@ -36,7 +36,6 @@ app.controller("baseController",function($scope){
 
     //点击checkbox记录删除的id
     $scope.updateDeleteArrs = function (node, id) {
-        console.log("updateArrs");
         if (node.checked) {
             $scope.deleIds.push(id);
         } else {

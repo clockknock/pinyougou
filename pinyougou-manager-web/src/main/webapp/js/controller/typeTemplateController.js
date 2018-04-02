@@ -47,7 +47,7 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
         }
         serviceObject.success(
             function (response) {
-                if (response.success) {
+                if (response.status) {
                     //重新查询
                     $scope.reloadList();//重新加载
                 } else {
@@ -61,11 +61,11 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
     //批量删除
     $scope.dele = function () {
         //获取选中的复选框
-        typeTemplateService.dele($scope.selectIds).success(
+        typeTemplateService.dele($scope.deleIds).success(
             function (response) {
-                if (response.success) {
+                if (response.status) {
                     $scope.reloadList();//刷新列表
-                    $scope.selectIds = [];
+                    $scope.deleIds = [];
                 }
             }
         );
@@ -108,11 +108,40 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
 
     //增加扩展属性行
     $scope.addTableRow = function () {
+        if ($scope.entity.customAttributeItems === undefined) {
+            $scope.entity.customAttributeItems = [];
+        }
         $scope.entity.customAttributeItems.push({});
+
     };
     //删除扩展属性行
     $scope.deleTableRow = function (index) {
         $scope.entity.customAttributeItems.splice(index, 1);
+    };
+
+    $scope.currentEntity = function (index) {
+        $scope.entity = {};
+        var currentTemplate = $scope.list[index];
+        $scope.entity.id = currentTemplate.id;
+        $scope.entity.name = currentTemplate.name;
+        $scope.entity.brandIds = JSON.parse(currentTemplate.brandIds);
+        $scope.entity.specIds = JSON.parse(currentTemplate.specIds);
+        $scope.entity.customAttributeItems = JSON.parse(currentTemplate.customAttributeItems);
+    };
+
+    $scope.textBeautify = function (jsonObj, field) {
+        var parse = JSON.parse(jsonObj);
+        var value = "";
+
+        for (var i = 0; i < parse.length; i++) {
+            if (i > 0) {
+                value += ",";
+            }
+            value += parse[i][field];
+        }
+
+
+        return value;
     }
 
 });	

@@ -2,6 +2,9 @@ package com.pinyougou.pojo;
 
 import java.io.Serializable;
 
+/**
+ * @author zhong
+ */
 public class TbTypeTemplate implements Serializable {
     private Long id;
 

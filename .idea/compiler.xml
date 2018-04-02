@@ -22,7 +22,7 @@
       <module name="pinyougou-parent" target="1.5" />
       <module name="pinyougou-pojo" target="1.5" />
       <module name="pinyougou-sellergoods-interface" target="1.5" />
-      <module name="pinyougou-sellergoods-service" target="1.5" />
+      <module name="pinyougou-sellergoods-service" target="1.6" />
       <module name="pinyougou-shop-web" target="1.5" />
     </bytecodeTargetLevel>
   </component>

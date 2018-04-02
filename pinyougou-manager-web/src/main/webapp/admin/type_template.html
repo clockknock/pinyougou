@@ -63,9 +63,10 @@
             <div class="form-group form-inline">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
-                            data-target="#editModal"><i class="fa fa-file-o"></i> 新建
+                            data-target="#editModal" ng-click="clearEntity()"><i
+                            class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除"><i
+                    <button type="button" class="btn btn-default" title="删除" ng-click="dele()"><i
                             class="fa fa-trash-o"></i> 删除
                     </button>
 
@@ -100,15 +101,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="entity in list">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" ng-click="updateDeleteArrs($event.target,entity.id)"></td>
                 <td>{{entity.id}}</td>
                 <td>{{entity.name}}</td>
-                <td>{{entity.specIds}}</td>
-                <td>{{entity.brandIds}}</td>
-                <td>{{entity.customAttributeItems}}</td>
+                <td>{{textBeautify(entity.specIds,'text')}}</td>
+                <td>{{textBeautify(entity.brandIds,'text')}}</td>
+                <td>{{textBeautify(entity.customAttributeItems,'text')}}</td>
                 <td class="text-center">
                     <button type="button" class="btn bg-olive btn-xs" data-toggle="modal"
-                            data-target="#editModal">修改
+                            data-target="#editModal" ng-click="currentEntity($index)">修改
                     </button>
                 </td>
             </tr>
@@ -165,7 +166,8 @@
                         <td>扩展属性</td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default" title="新增扩展属性"><i
+                                <button type="button" class="btn btn-default" title="新增扩展属性"
+                                        ng-click="addTableRow()"><i
                                         class="fa fa-file-o"></i> 新增扩展属性
                                 </button>
 
@@ -179,20 +181,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><input type="checkbox" class="icheckbox_square-blue"></td>
-                                    <td><input class="form-control" placeholder="属性名称"></td>
+                                <tr ng-repeat="entity in entity.customAttributeItems">
+                                    <td><input type="checkbox" class="icheckbox_square-blue"
+                                              ></td>
+                                    <td><input class="form-control" placeholder="属性名称"
+                                               ng-model="entity.text"></td>
                                     <td>
-                                        <button type="button" class="btn btn-default" title="删除"><i
-                                                class="fa fa-trash-o"></i> 删除
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="icheckbox_square-blue"></td>
-                                    <td><input class="form-control" placeholder="属性名称"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-default" title="删除"><i
+                                        <button type="button" class="btn btn-default" title="删除"
+                                                ng-click="deleTableRow($index)"><i
                                                 class="fa fa-trash-o"></i> 删除
                                         </button>
                                     </td>
@@ -207,7 +203,9 @@
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true"
+                        ng-click="save()">保存
+                </button>
                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
             </div>
         </div>

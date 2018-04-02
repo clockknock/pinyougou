@@ -46,12 +46,12 @@ class TypeTemplateController {
      */
     @RequestMapping("/add")
     fun add(@RequestBody typeTemplate: TbTypeTemplate): Result {
-        try {
+        return try {
             typeTemplateService.add(typeTemplate)
-            return Result(true, "增加成功")
+            Result(true, "增加成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "增加失败")
+            Result(false, "增加失败")
         }
 
     }
@@ -63,12 +63,12 @@ class TypeTemplateController {
      */
     @RequestMapping("/update")
     fun update(@RequestBody typeTemplate: TbTypeTemplate): Result {
-        try {
+        return try {
             typeTemplateService.update(typeTemplate)
-            return Result(true, "修改成功")
+            Result(true, "修改成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "修改失败")
+            Result(false, "修改失败")
         }
 
     }
