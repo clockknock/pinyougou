@@ -49,9 +49,9 @@ class SellerController {
     @RequestMapping("/add")
     fun add(@RequestBody seller: TbSeller): Result {
         //密码加密
-//        val passwordEncoder = BCryptPasswordEncoder()
-//        val password = passwordEncoder.encode(seller.password)//加密
-//        seller.password = password
+        val passwordEncoder = BCryptPasswordEncoder()
+        val password = passwordEncoder.encode(seller.password)//加密
+        seller.password = password
 
         return try {
             sellerService.add(seller)

@@ -40,10 +40,11 @@
     <!-- java class方式的认证管理器 -->
     <authentication-manager>
         <authentication-provider user-service-ref="userDetailService">
-
+            <password-encoder ref="passwordEncoder"/>
         </authentication-provider>
     </authentication-manager>
     <beans:bean id="userDetailService" class="com.pinyougou.shop.service.UserDetailServiceImpl"/>
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 
     <!-- 引用dubbo 服务 -->
