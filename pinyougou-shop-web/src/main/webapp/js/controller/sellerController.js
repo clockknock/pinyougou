@@ -37,7 +37,7 @@ app.controller('sellerController', function ($scope, $controller, sellerService)
         serviceObject.success(
             function (response) {
                 if (response.status) {
-                    location.href="shoplogin.html";
+                    location.href = "shoplogin.html";
                 } else {
                     alert(response.message);
                 }
@@ -83,6 +83,20 @@ app.controller('sellerController', function ($scope, $controller, sellerService)
                 $scope.paginationConf.totalItems = response.total;//更新总记录数
             }
         );
+    };
+
+    $scope.updateStatus = function (status) {
+        $scope.entity.status = status;
+        console.log("updateStatus:"+$scope.entity);
+        sellerService.updateStatus($scope.entity).success(
+            function (response) {
+                if (response.status) {
+                    reloadList()
+                } else {
+                    alert(response.msg)
+                }
+            }
+        )
     }
 
 });

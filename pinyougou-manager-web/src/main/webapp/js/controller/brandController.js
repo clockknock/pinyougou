@@ -1,6 +1,6 @@
-app.controller('brandController', function ($scope,$controller, brandService) {
+app.controller('brandController', function ($scope, $controller, brandService) {
     //继承baseController
-    $controller('baseController',{$scope:$scope});
+    $controller('baseController', {$scope: $scope});
 
     //查询所有商品列表
     $scope.findAll = function () {
@@ -43,8 +43,12 @@ app.controller('brandController', function ($scope,$controller, brandService) {
         if (confirm("确定要删除品牌吗?")) {
             brandService.dele($scope.deleIds).success(
                 function (response) {
-                    console.log(response.msg);
-                    $scope.reloadList();
+                    if (response.status) {
+
+                        $scope.reloadList();
+                    } else {
+                        alert(response.msg)
+                    }
                 }
             )
         }

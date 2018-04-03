@@ -59,5 +59,7 @@ public interface SellerService {
 	 * @return
 	 */
 	public PageResult findPage(TbSeller seller, int pageNum, int pageSize);
-	
+
+
+	public void updateStatus(TbSeller seller);
 }
