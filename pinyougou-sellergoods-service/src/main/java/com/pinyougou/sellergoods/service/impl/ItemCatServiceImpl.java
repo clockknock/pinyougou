@@ -104,7 +104,9 @@ public class ItemCatServiceImpl implements ItemCatService {
         }
 
         Page<TbItemCat> page = (Page<TbItemCat>) itemCatMapper.selectByExample(example);
-        return new PageResult(page.getTotal(), page.getResult());
+        List<TbItemCat> itemCats = page.getResult();
+
+        return new PageResult(page.getTotal(), itemCats);
     }
 
     @Override

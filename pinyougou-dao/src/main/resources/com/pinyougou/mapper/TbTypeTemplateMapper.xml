@@ -212,4 +212,8 @@
   <select id="findTypeTemplateList" resultType="java.util.Map">
     select id, name as text FROM tb_type_template
   </select>
+
+  <select id="findTypeIdJson" resultType="java.util.Map">
+    select id, name as text FROM tb_type_template WHERE id = #{id}
+  </select>
 </mapper>

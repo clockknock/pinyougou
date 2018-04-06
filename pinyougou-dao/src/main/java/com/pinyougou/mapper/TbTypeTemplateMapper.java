@@ -31,4 +31,6 @@ public interface TbTypeTemplateMapper {
     int updateByPrimaryKey(TbTypeTemplate record);
 
     List<Map> findTypeTemplateList();
+
+    Map findTypeIdJson(Long id);
 }

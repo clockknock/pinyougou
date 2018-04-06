@@ -114,5 +114,10 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         return typeTemplateMapper.findTypeTemplateList();
     }
 
+    @Override
+    public Map findTypeIdJson(Long id) {
+        return typeTemplateMapper.findTypeIdJson(id);
+    }
+
 
 }

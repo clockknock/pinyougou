@@ -36,6 +36,10 @@ app.service('itemCatService',function($http){
 
     this.findTypeTemplateList = function(){
 	    return $http.get('../itemCat/findTypeTemplateList.do')
+    };
 
-    }
+    //通过TypeId找到对应的Json-格式id:name
+    this.findTypeIdJson=function(id){
+        return $http.get('../typeTemplate/findTypeIdJson.do?id='+id)
+    };
 });

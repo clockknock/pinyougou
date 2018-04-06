@@ -43,7 +43,6 @@
       ng-controller="itemCatController"
       ng-init="findTypeTemplateList();selectList({id:0})">
 <!-- .box-body -->
-{{entity}}
 
 <div class="box-header with-border">
     <h3 class="box-title">商品分类管理
@@ -114,7 +113,8 @@
                             ng-click="catLevel(level+1);selectList(entity)">查询下级
                     </button>
                     <button type="button" class="btn bg-olive btn-xs" data-toggle="modal"
-                            data-target="#editModal" ng-click="currentEntity($index)">修改
+                            data-target="#editModal"
+                            ng-click="currentEntity($index);findTypeIdJson(entity.typeId)">修改
                     </button>
                 </td>
             </tr>

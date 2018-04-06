@@ -63,5 +63,6 @@ public interface TypeTemplateService {
 
 	List<Map> findTypeTemplateList();
 
+    Map	findTypeIdJson(Long id);
 	
 }

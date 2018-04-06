@@ -29,6 +29,7 @@ class UserDetailServiceImpl : UserDetailsService {
 
         if (seller != null) {
             val auths = ArrayList<GrantedAuthority>()
+            //给认证User添加权限角色
             auths.add(GrantedAuthority { "ROLE_SELLER" })
             return User(seller.sellerId, seller.password, auths)
         }

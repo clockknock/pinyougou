@@ -22,11 +22,20 @@ app.controller('itemCatController', function ($scope, $controller, itemCatServic
         );
     };
 
-    //查询实体
+    //查询实体的类型模板
     $scope.findOne = function (id) {
         itemCatService.findOne(id).success(
             function (response) {
-                $scope.entity = response;
+                $scope.entity.typeId = response;
+            }
+        );
+    };
+
+    //查询实体的typeId
+    $scope.findTypeIdJson = function (id) {
+        itemCatService.findTypeIdJson(id).success(
+            function (response) {
+                $scope.entity.typeId = response;
             }
         );
     };
@@ -65,7 +74,7 @@ app.controller('itemCatController', function ($scope, $controller, itemCatServic
                 if (response.status) {
                     $scope.findByParentId($scope.entity.parentId);//重新加载
                     $scope.deleIds = [];
-                }else{
+                } else {
                     alert(response.msg)
                 }
             }
@@ -131,24 +140,24 @@ app.controller('itemCatController', function ($scope, $controller, itemCatServic
     //新增/修改时清理弹出框中的内容
     $scope.clearEntity = function () {
 
-        console.log("itemCat clear:"+$scope.level);
+        console.log("itemCat clear:" + $scope.level);
         if ($scope.level == 1) {
-            $scope.entity = {parentId:0};
+            $scope.entity = {parentId: 0};
         }
 
         if ($scope.level == 2) {
-            $scope.entity = {parentId:$scope.entity1.id};
+            $scope.entity = {parentId: $scope.entity1.id};
         }
 //TODO 修改的parentID还有问题
         if ($scope.level == 3) {
-            $scope.entity = {parentId:$scope.entity2.id};
+            $scope.entity = {parentId: $scope.entity2.id};
         }
 
     };
 
 
     $scope.showTypeId = function (typeId) {
-        if(isNaN(typeId)){
+        if (isNaN(typeId)) {
             return typeId.id;
         }
         return typeId;

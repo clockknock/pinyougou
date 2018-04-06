@@ -112,5 +112,9 @@ class TypeTemplateController {
         return typeTemplateService.findPage(typeTemplate, page, rows)
     }
 
+    @RequestMapping("/findTypeIdJson")
+    fun findTypeIdJson(id: Long): Map<*, *>? =
+            typeTemplateService.findTypeIdJson(id)
+
 
 }
