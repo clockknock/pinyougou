@@ -31,9 +31,14 @@ app.controller('itemCatController', function ($scope, $controller, itemCatServic
         );
     };
 
+
     //保存
     $scope.save = function () {
         var serviceObject;//服务层对象
+
+        //处理一下parentId字段
+        $scope.entity.typeId = $scope.entity.typeId.id;
+
         if ($scope.entity.id != null) {//如果有ID
             serviceObject = itemCatService.update($scope.entity); //修改
         } else {
@@ -41,9 +46,9 @@ app.controller('itemCatController', function ($scope, $controller, itemCatServic
         }
         serviceObject.success(
             function (response) {
-                if (response.success) {
+                if (response.status) {
                     //重新查询
-                    $scope.reloadList();//重新加载
+                    $scope.findByParentId($scope.entity.parentId);//重新加载
                 } else {
                     alert(response.message);
                 }
@@ -55,11 +60,13 @@ app.controller('itemCatController', function ($scope, $controller, itemCatServic
     //批量删除
     $scope.dele = function () {
         //获取选中的复选框
-        itemCatService.dele($scope.selectIds).success(
+        itemCatService.dele($scope.deleIds).success(
             function (response) {
-                if (response.success) {
-                    $scope.reloadList();//刷新列表
-                    $scope.selectIds = [];
+                if (response.status) {
+                    $scope.findByParentId($scope.entity.parentId);//重新加载
+                    $scope.deleIds = [];
+                }else{
+                    alert(response.msg)
                 }
             }
         );
@@ -85,30 +92,66 @@ app.controller('itemCatController', function ($scope, $controller, itemCatServic
         )
     };
 
+    $scope.typeTemplateList = {data: []};
+    $scope.findTypeTemplateList = function () {
+        itemCatService.findTypeTemplateList().success(
+            function (response) {
+                $scope.typeTemplateList = {data: response};
+            }
+        )
+    }
+
     //记录当前category是第几层
-    $scope.level=1;
+    $scope.level = 1;
 
     $scope.catLevel = function (level) {
-      $scope.level=level;
+        $scope.level = level;
     };
 
-    $scope.selectList = function(currentEntity){
-        console.log(currentEntity);
-        if($scope.level==1){
-            $scope.entity1=null;
-            $scope.entity2=null;
+    $scope.selectList = function (currentEntity) {
+        if ($scope.level == 1) {
+            $scope.entity1 = null;
+            $scope.entity2 = null;
         }
 
-        if($scope.level==2){
-            $scope.entity1=currentEntity;
-            $scope.entity2=null;
+        if ($scope.level == 2) {
+            $scope.entity1 = currentEntity;
+            $scope.entity2 = null;
         }
 
-        if($scope.level==3){
-            $scope.entity2=currentEntity;
+        if ($scope.level == 3) {
+            $scope.entity2 = currentEntity;
         }
 
         $scope.findByParentId(currentEntity.id);
+        $scope.entity.parentId = currentEntity.id;
+
+    };
+
+    //新增/修改时清理弹出框中的内容
+    $scope.clearEntity = function () {
+
+        console.log("itemCat clear:"+$scope.level);
+        if ($scope.level == 1) {
+            $scope.entity = {parentId:0};
+        }
+
+        if ($scope.level == 2) {
+            $scope.entity = {parentId:$scope.entity1.id};
+        }
+//TODO 修改的parentID还有问题
+        if ($scope.level == 3) {
+            $scope.entity = {parentId:$scope.entity2.id};
+        }
+
+    };
+
+
+    $scope.showTypeId = function (typeId) {
+        if(isNaN(typeId)){
+            return typeId.id;
+        }
+        return typeId;
     }
 
 

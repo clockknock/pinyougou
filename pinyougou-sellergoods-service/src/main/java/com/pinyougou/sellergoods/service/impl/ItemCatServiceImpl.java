@@ -9,6 +9,7 @@ import com.pinyougou.pojo.TbItemCatExample;
 import com.pinyougou.pojo.TbItemCatExample.Criteria;
 import com.pinyougou.sellergoods.service.ItemCatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import priv.zhong.bean.PageResult;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author Administrator
  */
 @Service
+@Transactional
 public class ItemCatServiceImpl implements ItemCatService {
 
     @Autowired
@@ -76,6 +78,13 @@ public class ItemCatServiceImpl implements ItemCatService {
     @Override
     public void delete(Long[] ids) {
         for (Long id : ids) {
+            TbItemCatExample example=new TbItemCatExample();
+            Criteria criteria = example.createCriteria();
+            criteria.andParentIdEqualTo(id);
+            List<TbItemCat> tbItemCats = itemCatMapper.selectByExample(example);
+            if(tbItemCats!=null &&tbItemCats.size()>0){
+                throw new RuntimeException("该分类有子分类,不能删");
+            }
             itemCatMapper.deleteByPrimaryKey(id);
         }
     }

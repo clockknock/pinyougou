@@ -2,7 +2,9 @@ package com.pinyougou.manager.controller
 
 import com.alibaba.dubbo.config.annotation.Reference
 import com.pinyougou.pojo.TbItemCat
+import com.pinyougou.pojo.TbTypeTemplate
 import com.pinyougou.sellergoods.service.ItemCatService
+import com.pinyougou.sellergoods.service.TypeTemplateService
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -21,6 +23,9 @@ class ItemCatController {
 
     @Reference
     private lateinit var itemCatService: ItemCatService
+
+    @Reference
+    private lateinit var typeTemplateService: TypeTemplateService
 
     /**
      * 返回全部列表
@@ -48,12 +53,12 @@ class ItemCatController {
      */
     @RequestMapping("/add")
     fun add(@RequestBody itemCat: TbItemCat): Result {
-        try {
+        return try {
             itemCatService.add(itemCat)
-            return Result(true, "增加成功")
+            Result(true, "增加成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "增加失败")
+            Result(false, "增加失败")
         }
 
     }
@@ -116,6 +121,11 @@ class ItemCatController {
     @RequestMapping("/findByParentId")
     fun findByParentId(parentId: Long): List<TbItemCat> {
         return itemCatService.findByParentId(parentId)
+    }
+
+    @RequestMapping("findTypeTemplateList")
+    fun findTypeTemplateList(): MutableList<Map<*,*>>? {
+        return typeTemplateService.findTypeTemplateList()
 
     }
 }

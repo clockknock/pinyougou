@@ -26,6 +26,8 @@ app.controller("baseController",function($scope){
         $scope.entity = {};
     };
 
+    $scope.entity={};
+
     //修改商品--将之前请求下来的list中对应角标的brand放到$scope
     $scope.currentEntity = function (index) {
         $scope.entity = $scope.list[index];
@@ -44,8 +46,26 @@ app.controller("baseController",function($scope){
         }
     };
 
-
     //条件查询的实体对象
     $scope.searchEntity = {};
+
+    /**
+     *
+     * @param jsonObj 需要转的json对象
+     * @param field 需要取出来的字符串字段名
+     * @returns {string}
+     */
+    $scope.textBeautify = function (jsonObj, field) {
+        var parse = JSON.parse(jsonObj);
+        var value = "";
+
+        for (var i = 0; i < parse.length; i++) {
+            if (i > 0) {
+                value += ",";
+            }
+            value += parse[i][field];
+        }
+        return value;
+    }
 
 });
