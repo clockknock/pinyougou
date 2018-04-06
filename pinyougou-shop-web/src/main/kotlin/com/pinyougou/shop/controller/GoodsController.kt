@@ -2,6 +2,7 @@ package com.pinyougou.shop.controller
 
 import com.alibaba.dubbo.config.annotation.Reference
 import com.pinyougou.pojo.TbGoods
+import com.pinyougou.pojogroup.Goods
 import com.pinyougou.sellergoods.service.GoodsService
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -47,15 +48,15 @@ class GoodsController {
      * @return
      */
     @RequestMapping("/add")
-    fun add(@RequestBody goods: TbGoods): Result {
-        try {
+    fun add(@RequestBody goods: Goods): Result {
+        return try {
             goodsService.add(goods)
-            return Result(true, "增加成功")
+            println(goods)
+            Result(true, "增加成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "增加失败")
+            Result(false, "增加失败")
         }
-
     }
 
     /**
@@ -65,14 +66,13 @@ class GoodsController {
      */
     @RequestMapping("/update")
     fun update(@RequestBody goods: TbGoods): Result {
-        try {
+        return try {
             goodsService.update(goods)
-            return Result(true, "修改成功")
+            Result(true, "修改成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "修改失败")
+            Result(false, "修改失败")
         }
-
     }
 
     /**
@@ -92,19 +92,17 @@ class GoodsController {
      */
     @RequestMapping("/delete")
     fun delete(ids: Array<Long>): Result {
-        try {
+        return try {
             goodsService.delete(ids)
-            return Result(true, "删除成功")
+            Result(true, "删除成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "删除失败")
+            Result(false, "删除失败")
         }
-
     }
 
     /**
      * 查询+分页
-     * @param brand
      * @param page
      * @param rows
      * @return

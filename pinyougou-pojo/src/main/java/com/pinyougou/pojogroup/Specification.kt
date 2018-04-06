@@ -13,8 +13,6 @@ import java.io.Serializable
 class Specification : Serializable {
 
     var specification: TbSpecification? = null
-
     var specificationOptionList: List<TbSpecificationOption>? = null
-
 
 }
