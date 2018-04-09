@@ -90,12 +90,12 @@ class TypeTemplateController {
      */
     @RequestMapping("/delete")
     fun delete(ids: Array<Long>): Result {
-        try {
+        return try {
             typeTemplateService.delete(ids)
-            return Result(true, "删除成功")
+            Result(true, "删除成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "删除失败")
+            Result(false, "删除失败")
         }
 
     }
@@ -116,5 +116,10 @@ class TypeTemplateController {
     fun findTypeIdJson(id: Long): Map<*, *>? =
             typeTemplateService.findTypeIdJson(id)
 
+
+    @RequestMapping("/findSpecList")
+    fun findSpecList(id: Long?): List<Map<*, *>> {
+        return typeTemplateService.findSpecList(id)
+    }
 
 }

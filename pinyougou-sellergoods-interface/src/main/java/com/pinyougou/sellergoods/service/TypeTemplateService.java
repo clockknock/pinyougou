@@ -63,6 +63,18 @@ public interface TypeTemplateService {
 
 	List<Map> findTypeTemplateList();
 
+    /**
+     * 根据id返回return格式的Map
+     * @param id 想找的typeTemplate的id
+     * @return {"id":39,"text":"测试哦"}
+     */
     Map	findTypeIdJson(Long id);
+
+    /**
+     * 根据所需模板的id查询对应规格的详情列表
+     * @param id specId
+     * @return f
+     */
+    List<Map> findSpecList(Long id);
 	
 }

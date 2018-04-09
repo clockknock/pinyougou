@@ -4,7 +4,7 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
     $controller('baseController', {$scope: $scope});//继承
 
     $scope.initEntity = function () {
-        $scope.entity = {goods: {}, goodsDesc: {itemImages: []}};
+        $scope.entity = {goods: {}, goodsDesc: {itemImages: [],specificationItems:[]}};
 
     };
 
@@ -149,13 +149,17 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
         itemCatService.findOne(newValue).success(
             function (response) {
                 $scope.entity.goods.typeTemplateId = response.typeId;
-                $scope.findBrand(response.typeId);
             }
         );
     });
 
-    $scope.findBrand = function (typeId) {
-        typeTemplateService.findOne(typeId).success(
+
+    //查询品牌下拉列表内容
+    $scope.$watch('entity.goods.typeTemplateId', function (typeTemplateId, oldValue) {
+        if (typeTemplateId == undefined) {
+            return
+        }
+        typeTemplateService.findOne(typeTemplateId).success(
             function (response) {
                 $scope.typeTemplate = response;// 模板对象
                 $scope.brandList = JSON.parse($scope.typeTemplate.brandIds);
@@ -163,7 +167,21 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
                 //扩展属性
                 $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
             }
+        );
+
+        /**
+         * [{"attributeName":"网络制式",
+         * "attributeValue":["移动3G","移动4G"]},
+         * {"attributeName":"屏幕尺寸","
+         * attributeValue":["6寸","5.5寸"]}]
+         */
+        typeTemplateService.findSpecList(typeTemplateId).success(
+            function(response){
+                $scope.specList=response;
+            }
         )
-    }
+
+    });
+
 
 });
