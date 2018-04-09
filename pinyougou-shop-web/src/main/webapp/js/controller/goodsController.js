@@ -1,10 +1,10 @@
 //控制层
-app.controller('goodsController', function ($scope, $controller, goodsService, uploadService) {
+app.controller('goodsController', function ($scope, $controller, goodsService, uploadService, itemCatService, typeTemplateService) {
 
     $controller('baseController', {$scope: $scope});//继承
 
     $scope.initEntity = function () {
-        $scope.entity = {goodsDesc: {itemImages: []}};
+        $scope.entity = {goods: {}, goodsDesc: {itemImages: []}};
 
     };
 
@@ -96,13 +96,74 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
         )
     };
 
-    $scope.addPicEntity=function(){
+    $scope.addPicEntity = function () {
         $scope.entity.goodsDesc.itemImages.push($scope.image_entity);
     };
 
-    $scope.removePicEntity=function(index){
+    $scope.removePicEntity = function (index) {
         console.log(index);
-        $scope.entity.goodsDesc.itemImages.splice(index,1);
+        $scope.entity.goodsDesc.itemImages.splice(index, 1);
     };
+
+    /**
+     * 商品分类处理
+     */
+    $scope.findItemCat1List = function () {
+        itemCatService.findByParentId(0).success(
+            function (response) {
+                $scope.itemCat1List = response;
+                //$scope.entity.goods.category1Id
+            }
+        )
+    };
+
+    $scope.$watch("entity.goods.category1Id", function (newValue, oldValue) {
+        if (newValue == undefined) {
+            return
+        }
+        $scope.itemCat3List = null;
+
+        itemCatService.findByParentId(newValue).success(
+            function (response) {
+                $scope.itemCat2List = response;
+            }
+        )
+    });
+
+    $scope.$watch("entity.goods.category2Id", function (newValue, oldValue) {
+        if (newValue == undefined) {
+            return
+        }
+        itemCatService.findByParentId(newValue).success(
+            function (response) {
+                $scope.itemCat3List = response;
+            }
+        )
+    });
+
+    //读取模板ID
+    $scope.$watch('entity.goods.category3Id', function (newValue, oldValue) {
+        if (newValue == undefined) {
+            return
+        }
+        itemCatService.findOne(newValue).success(
+            function (response) {
+                $scope.entity.goods.typeTemplateId = response.typeId;
+                $scope.findBrand(response.typeId);
+            }
+        );
+    });
+
+    $scope.findBrand = function (typeId) {
+        typeTemplateService.findOne(typeId).success(
+            function (response) {
+                $scope.typeTemplate = response;// 模板对象
+                $scope.brandList = JSON.parse($scope.typeTemplate.brandIds);
+
+                //扩展属性
+                $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
+            }
+        )
+    }
 
 });
