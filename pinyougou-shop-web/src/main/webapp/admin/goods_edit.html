@@ -45,7 +45,7 @@
 
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou"
       ng-controller="goodsController" ng-init="initEntity();findItemCat1List()">
-{{entity}}
+{{ entity.itemList}}
 
 <!-- 正文区域 -->
 <section class="content">
@@ -240,6 +240,7 @@
 
                                     <span ng-repeat="option in item.options"><input
                                             type="checkbox"
+                                            ng-click="updateSpecAttribute($event.target,item.text,option.optionName)"
                                             ng-model="option.id">{{option.optionName}}</span>
 
                                 </div>
@@ -253,8 +254,11 @@
                             <table class="table table-bordered table-striped table-hover dataTable">
                                 <thead>
                                 <tr>
-                                    <th class="sorting">屏幕尺寸</th>
-                                    <th class="sorting">网络制式</th>
+                                    <th class="sorting"
+                                        ng-repeat="node in entity.goodsDesc.specificationItems">
+                                        {{node.attributeName}}
+                                    </th>
+
                                     <th class="sorting">价格</th>
                                     <th class="sorting">库存</th>
                                     <th class="sorting">是否启用</th>
@@ -262,87 +266,24 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>
-                                        4.0
+                                <tr ng-repeat="row in entity.itemList">
+                                    <td ng-repeat="node in entity.goodsDesc.specificationItems">
+                                        {{row.spec[node.attributeName]}}
                                     </td>
-                                    <td>
-                                        3G
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="价格">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="库存数量">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        4.0
-                                    </td>
-                                    <td>
-                                        4G
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="价格">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="库存数量">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        5.0
-                                    </td>
-                                    <td>
-                                        3G
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="价格">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="库存数量">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        5.0
-                                    </td>
-                                    <td>
-                                        4G
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="价格">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" placeholder="库存数量">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                </tr>
 
+                                    <td>
+                                        <input class="form-control" placeholder="价格">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" placeholder="库存数量">
+                                    </td>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
 

@@ -33,6 +33,6 @@ app.service('typeTemplateService',function($http){
 	//查找对应的规格列表
 	this.findSpecList = function(id){
         return $http.post('../typeTemplate/findSpecList.do?id='+id);
-    }
+    };
 
 });
