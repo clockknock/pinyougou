@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSON
 import com.github.pagehelper.Page
 import com.github.pagehelper.PageHelper
 import com.pinyougou.mapper.*
-import com.pinyougou.pojo.TbGoods
-import com.pinyougou.pojo.TbGoodsExample
-import com.pinyougou.pojo.TbItem
-import com.pinyougou.pojo.TbSellerExample
+import com.pinyougou.pojo.*
 import com.pinyougou.pojogroup.Goods
 import com.pinyougou.sellergoods.service.GoodsService
 import org.springframework.beans.factory.annotation.Autowired
@@ -127,8 +124,18 @@ open class GoodsServiceImpl : GoodsService {
      * @param id
      * @return
      */
-    override fun findOne(id: Long?): TbGoods {
-        return goodsMapper.selectByPrimaryKey(id)
+    override fun findOne(id: Long?): Goods {
+        val goods = Goods()
+        //封装tbGoods
+        goods.goods = goodsMapper.selectByPrimaryKey(id)
+        //封装goodsDesc
+        goods.goodsDesc = goodsDescMapper.selectByPrimaryKey(id)
+        //封装tbItem
+        val itemExample = TbItemExample()
+        itemExample.createCriteria().andGoodsIdEqualTo(id)
+        goods.itemList=itemMapper.selectByExample(itemExample)
+
+        return goods
     }
 
     /**

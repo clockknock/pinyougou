@@ -54,7 +54,6 @@ class GoodsController {
             val name = SecurityContextHolder.getContext().authentication.name
             goods.goods?.sellerId = name
             goodsService.add(goods)
-            println(goods)
             Result(true, "增加成功")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -84,7 +83,7 @@ class GoodsController {
      * @return
      */
     @RequestMapping("/findOne")
-    fun findOne(id: Long?): TbGoods {
+    fun findOne(id: Long?): Goods {
         return goodsService.findOne(id)
     }
 

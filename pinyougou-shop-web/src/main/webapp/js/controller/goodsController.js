@@ -1,10 +1,14 @@
 //控制层
-app.controller('goodsController', function ($scope, $controller, goodsService, uploadService, itemCatService, typeTemplateService) {
+app.controller('goodsController', function ($scope, $controller, $location, goodsService, uploadService, itemCatService, typeTemplateService) {
 
     $controller('baseController', {$scope: $scope});//继承
 
     $scope.initEntity = function () {
-        $scope.entity = {goods: {}, goodsDesc: {itemImages: [], specificationItems: []}};
+        var id = $location.search()["id"];
+        if (id != null) {
+            $scope.findOne(id);
+            $scope.entity = {goods: {}, goodsDesc: {itemImages: [], specificationItems: []}};
+        }
 
     };
 
@@ -32,13 +36,26 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
         goodsService.findOne(id).success(
             function (response) {
                 $scope.entity = response;
+                //富文本
+                editor.html($scope.entity.goodsDesc.introduction);
+                //商品图片
+                $scope.entity.goodsDesc.itemImages = JSON.parse($scope.entity.goodsDesc.itemImages);
+                //扩展属性
+                $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.entity.goodsDesc.customAttributeItems);
+                //规格
+                $scope.entity.goodsDesc.specificationItems = JSON.parse($scope.entity.goodsDesc.specificationItems);
+
+                //规格条目
+                for (var i = 0; i < $scope.entity.itemList.length; i++) {
+                    $scope.entity.itemList[i].spec = JSON.parse($scope.entity.itemList[i].spec);
+                }
+
             }
         );
     };
 
     //保存
     $scope.save = function () {
-
         $scope.entity.goodsDesc.introduction = editor.html();
         var serviceObject;//服务层对象
         if ($scope.entity.id != null) {//如果有ID
@@ -162,11 +179,14 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
                 $scope.typeTemplate = response;// 模板对象
                 $scope.brandList = JSON.parse($scope.typeTemplate.brandIds);
 
-                //扩展属性
-                $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
-                //需要将规格重置
-                $scope.entity.goodsDesc.specificationItems = [];
-                $scope.entity.itemList = [];
+                //没有id是新增,新增才重置
+                if ($scope.entity.goods.id == null) {
+                    //扩展属性
+                    $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
+                    //需要将规格重置
+                    $scope.entity.goodsDesc.specificationItems = [];
+                    $scope.entity.itemList = [];
+                }
             }
         );
 
@@ -265,6 +285,15 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
         return newList;
     }
 
-    $scope.status=["未审核",'审核通过','审核未通过','已关闭'];
+    $scope.status = ["未审核", '审核通过', '审核未通过', '已关闭'];
 
+    //查看是否需要勾选
+    $scope.checkAttributeValue = function (attrName, attrValue) {
+        //1.先看是不是这个规格
+        var spec = $scope.searchSpecByKey(attrName);
+        if (spec == undefined) return false;
+        //2.再看这个规格参数是否匹配
+        return spec.attributeValue.indexOf(attrValue) >= 0;
+
+    }
 });

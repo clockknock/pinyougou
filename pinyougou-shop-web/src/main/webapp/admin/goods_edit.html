@@ -242,7 +242,9 @@
                                     <span ng-repeat="option in item.options"><input
                                             type="checkbox"
                                             ng-click="updateSpecAttribute($event.target,item.text,option.optionName)"
-                                            ng-model="option.id">{{option.optionName}}</span>
+                                            ng-model="option.id"
+                                            ng-checked="checkAttributeValue(item.text,option.optionName)">{{option
+                                        .optionName}}</span>
 
                                 </div>
                             </div>
@@ -309,7 +311,7 @@
     </div>
     <div class="btn-toolbar list-toolbar">
         <button class="btn btn-primary" ng-click="save()"><i class="fa fa-save"></i>保存</button>
-        <button class="btn btn-default">返回列表</button>
+        <a class="btn btn-default" href="goods.html">返回列表</a>
     </div>
 
 </section>

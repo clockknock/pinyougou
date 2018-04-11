@@ -48,7 +48,7 @@ public interface GoodsService {
      * @param id
      * @return
      */
-    public TbGoods findOne(Long id);
+    public Goods findOne(Long id);
 
 
     /**
