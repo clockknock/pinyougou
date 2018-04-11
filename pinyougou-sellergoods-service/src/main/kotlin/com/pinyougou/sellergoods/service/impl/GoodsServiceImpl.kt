@@ -105,6 +105,7 @@ open class GoodsServiceImpl : GoodsService {
         item.updateTime = Date()
 
         //商品图片
+        @Suppress("UNCHECKED_CAST")
         val imageList = JSON.parseArray(goods.goodsDesc?.itemImages) as List<Map<*, *>>
         if (imageList.isNotEmpty()) {
             val map = imageList[0]
@@ -146,9 +147,10 @@ open class GoodsServiceImpl : GoodsService {
         val example = TbGoodsExample()
         val criteria = example.createCriteria()
 
+
         if (goods != null) {
             if (goods.sellerId != null && goods.sellerId.isNotEmpty()) {
-                criteria.andSellerIdLike("%" + goods.sellerId + "%")
+                criteria.andSellerIdEqualTo( goods.sellerId )
             }
             if (goods.goodsName != null && goods.goodsName.isNotEmpty()) {
                 criteria.andGoodsNameLike("%" + goods.goodsName + "%")

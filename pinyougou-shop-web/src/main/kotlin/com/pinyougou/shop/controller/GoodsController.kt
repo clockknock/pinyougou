@@ -112,6 +112,7 @@ class GoodsController {
      */
     @RequestMapping("/search")
     fun search(@RequestBody goods: TbGoods, page: Int, rows: Int): PageResult {
+        goods.sellerId = SecurityContextHolder.getContext().authentication.name
         return goodsService.findPage(goods, page, rows)
     }
 
