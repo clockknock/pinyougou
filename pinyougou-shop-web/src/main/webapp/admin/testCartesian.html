@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        /**
+         * 给出包含n个数组的一个数组 arrays1(里面的array都是存的String),求其中所有数组的字符串拼接(笛卡尔积)
+         */
+        var arrays1 = [
+            {
+                "attributeName": "接口类型",
+                "attributeValue": ["DVI", "HDMI", "USB"]
+            }
+            , {
+                "attributeName": "电视屏幕尺寸",
+                "attributeValue": ["40英寸", "41英寸"]
+            },
+            {
+                "attributeName": "能效级别",
+                "attributeValue": ["一级能效", "二级能效", "三级能效"]
+            }];
+
+
+        function getCartesian1() {
+            //
+            var target = [""];
+            for (var i = 0; i < arrays1.length; i++) {
+                target = doJoint1(target, arrays1[i].attributeValue);
+            }
+            console.log(target);
+        }
+
+
+        function doJoint1(target, arr) {
+            var newList = [];
+            for (var i = 0; i < target.length; i++) {
+                var oldRow = target[i];
+                for (var j = 0; j < arr.length; j++) {
+                    // var newRow = JSON.parse(JSON.stringify(oldRow));
+                    var newRow = oldRow;
+                    newRow += arr[j];
+                    newList.push(newRow);
+                }
+            }
+            return newList;
+        }
+
+
+        /**
+         * 给出包含n个数组的一个数组 arrays1(里面的array都是存的String),求其中所有数组的字符串拼接(笛卡尔积)
+         */
+        var arrays2 = [
+            ["DVI", "HDMI", "USB"]
+            , ["40英寸", "41英寸"]
+            , ["一级能效","二级能效", "三级能效"]
+        ];
+
+        //求笛卡尔积
+        function getCartesian2() {
+            //先提供一个空的数组
+            var target = [""];
+            //遍历大数组,将里面的小数组找到
+            for (var i = 0; i < arrays2.length; i++) {
+                //把目标数组和小数组扔到方法里
+                target = doJoint2(target, arrays2[i]);
+            }
+            console.log(target);
+        }
+
+        /**
+         *
+         * @param target 最终存放结果的数组
+         * @param arr 本次乘的数组
+         * @returns {Array} 目标笛卡尔积数组
+         */
+        function doJoint2(target, arr) {
+            var newList = [];
+            for (var i = 0; i < target.length; i++) {
+                //先从目标数组中将旧的数组拿出来
+                var oldRow = target[i];
+                for (var j = 0; j < arr.length; j++) {
+                    //深克隆
+                    var newRow = JSON.parse(JSON.stringify(oldRow));
+                    //让复制出来的一份拼接上本次乘的数组中的遍历对象
+                    newRow += arr[j];
+                    //放入新数组
+                    newList.push(newRow);
+                }
+            }
+            return newList;
+        }
+
+
+
+
+        //求笛卡尔积
+        function getCartesian3() {
+            var target = [""];
+            for(var i =0;i<arrays2.length;i++){
+                target = doJoint3(target,arrays2[i]);
+            }
+            console.log(target);
+        }
+
+        /**
+         *
+         * @param target 最终存放结果的数组
+         * @param arr 本次乘的数组
+         * @returns {Array} 目标笛卡尔积数组
+         */
+        function doJoint3(target, arr) {
+            var newList = [];
+            for(var i =0;i < target.length;i++){
+                var oldRow=target[i];
+                for(var j = 0;j<arr.length;j++){
+                    var newRow=oldRow;
+                    newRow+=arr[j];
+                    newList.push(newRow)
+                }
+            }
+
+            return newList;
+        }
+
+
+    </script>
+</head>
+<body>
+<input type="button" onclick="getCartesian1()" value="例子1">
+<input type="button" onclick="getCartesian2()" value="例子2">
+<input type="button" onclick="getCartesian3()" value="测试3">
+
+</body>
+</html>

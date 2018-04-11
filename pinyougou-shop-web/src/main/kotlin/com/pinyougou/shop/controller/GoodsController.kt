@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference
 import com.pinyougou.pojo.TbGoods
 import com.pinyougou.pojogroup.Goods
 import com.pinyougou.sellergoods.service.GoodsService
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -50,6 +51,8 @@ class GoodsController {
     @RequestMapping("/add")
     fun add(@RequestBody goods: Goods): Result {
         return try {
+            val name = SecurityContextHolder.getContext().authentication.name
+            goods.goods?.sellerId = name
             goodsService.add(goods)
             println(goods)
             Result(true, "增加成功")

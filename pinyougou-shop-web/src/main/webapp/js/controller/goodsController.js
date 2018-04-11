@@ -241,7 +241,7 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
     };
     //创建SKU列表
     $scope.createItemList = function () {
-        $scope.entity.itemList = [{spec: {}, price: 0, num: 99999, status: '0', isDefault: '0'}];//列表初始化
+        $scope.entity.itemList = [{spec: {}, price: 200, num: 99, status: '1', isDefault: '0'}];//列表初始化
 
         var items = $scope.entity.goodsDesc.specificationItems;
 
@@ -250,13 +250,14 @@ app.controller('goodsController', function ($scope, $controller, goodsService, u
         }
     };
 
-     function addColumn (list, columnName, columnValues) {
+    function addColumn(list, columnName, columnValues) {
         var newList = [];
         for (var i = 0; i < list.length; i++) {
-            //取出
+            //取出itemList的对象:{"spec":{"网络":"移动3G"},"price":0,"num":99999,"status":"0","isDefault":"0"}
             var oldRow = list[i];
             for (var j = 0; j < columnValues.length; j++) {
                 var newRow = JSON.parse(JSON.stringify(oldRow));//深克隆
+                //塞新的spec进去:{"spec":{"网络":"移动3G","机身内存":"32G"},"price":0,"num":99999,"status":"0","isDefault":"0"}
                 newRow.spec[columnName] = columnValues[j];
                 newList.push(newRow);
             }

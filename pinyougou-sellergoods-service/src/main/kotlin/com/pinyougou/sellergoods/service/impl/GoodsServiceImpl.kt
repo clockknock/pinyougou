@@ -1,17 +1,21 @@
 package com.pinyougou.sellergoods.service.impl
 
 import com.alibaba.dubbo.config.annotation.Service
+import com.alibaba.fastjson.JSON
 import com.github.pagehelper.Page
 import com.github.pagehelper.PageHelper
-import com.pinyougou.mapper.TbGoodsDescMapper
-import com.pinyougou.mapper.TbGoodsMapper
+import com.pinyougou.mapper.*
 import com.pinyougou.pojo.TbGoods
 import com.pinyougou.pojo.TbGoodsExample
+import com.pinyougou.pojo.TbItem
+import com.pinyougou.pojo.TbSellerExample
 import com.pinyougou.pojogroup.Goods
 import com.pinyougou.sellergoods.service.GoodsService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.transaction.annotation.Transactional
 import priv.zhong.bean.PageResult
+import java.util.*
 
 /**
  * @author 钟未鸣
@@ -47,10 +51,65 @@ open class GoodsServiceImpl : GoodsService {
      * 增加
      */
     override fun add(goods: Goods) {
-        goodsMapper.insert(goods.goods)
-        goods.goodsDesc?.goodsId = goods.goods?.id
+        val tbGoods = goods.goods
+//        val name = SecurityContextHolder.getContext().authentication.name
+        tbGoods?.sellerId = tbGoods?.sellerId
+        goodsMapper.insert(tbGoods)
+        goods.goodsDesc?.goodsId = tbGoods?.id
         goodsDescMapper.insert(goods.goodsDesc)
 
+        goods.itemList?.forEach { item ->
+            if ("1" == tbGoods?.isEnableSpec) {
+                //允许规格
+                //标题
+                val specs = JSON.parseObject(item.spec) as Map<*, *>
+                item.title = tbGoods.goodsName + specs.values.joinToString(separator = "")
+                setItemValues(item, tbGoods, goods)
+
+            } else {
+
+                item.title = tbGoods?.goodsName
+                item.price = tbGoods?.price
+                item.isDefault = "1"
+                item.status = "1"
+                item.num = 99
+                item.spec = "{}"
+                setItemValues(item, tbGoods, goods)
+            }
+
+            itemMapper.insert(item)
+
+        }
+
+    }
+
+    /**
+     * 设置tbItem公有属性
+     */
+    private fun setItemValues(item: TbItem, tbGoods: TbGoods?, goods: Goods) {
+        //设置对应的goodId
+        item.goodsId = tbGoods?.id
+        //品牌
+        item.brand = brandMapper.selectByPrimaryKey(tbGoods?.brandId).name
+        //分类id
+        item.categoryid = tbGoods?.category3Id
+        //分类名
+        item.category = itemCatMapper.selectByPrimaryKey(tbGoods?.category3Id).name
+        //创建日期
+        item.createTime = Date()
+        //卖家
+        item.seller = sellerMapper.selectByPrimaryKey(tbGoods?.sellerId).name
+        //卖家Id
+        item.sellerId = tbGoods?.sellerId
+        //修改日期
+        item.updateTime = Date()
+
+        //商品图片
+        val imageList = JSON.parseArray(goods.goodsDesc?.itemImages) as List<Map<*, *>>
+        if (imageList.isNotEmpty()) {
+            val map = imageList[0]
+            item.image = map["url"] as String?
+        }
     }
 
 
@@ -88,28 +147,28 @@ open class GoodsServiceImpl : GoodsService {
         val criteria = example.createCriteria()
 
         if (goods != null) {
-            if (goods.sellerId != null && goods.sellerId.length > 0) {
+            if (goods.sellerId != null && goods.sellerId.isNotEmpty()) {
                 criteria.andSellerIdLike("%" + goods.sellerId + "%")
             }
-            if (goods.goodsName != null && goods.goodsName.length > 0) {
+            if (goods.goodsName != null && goods.goodsName.isNotEmpty()) {
                 criteria.andGoodsNameLike("%" + goods.goodsName + "%")
             }
-            if (goods.auditStatus != null && goods.auditStatus.length > 0) {
+            if (goods.auditStatus != null && goods.auditStatus.isNotEmpty()) {
                 criteria.andAuditStatusLike("%" + goods.auditStatus + "%")
             }
-            if (goods.isMarketable != null && goods.isMarketable.length > 0) {
+            if (goods.isMarketable != null && goods.isMarketable.isNotEmpty()) {
                 criteria.andIsMarketableLike("%" + goods.isMarketable + "%")
             }
-            if (goods.caption != null && goods.caption.length > 0) {
+            if (goods.caption != null && goods.caption.isNotEmpty()) {
                 criteria.andCaptionLike("%" + goods.caption + "%")
             }
-            if (goods.smallPic != null && goods.smallPic.length > 0) {
+            if (goods.smallPic != null && goods.smallPic.isNotEmpty()) {
                 criteria.andSmallPicLike("%" + goods.smallPic + "%")
             }
-            if (goods.isEnableSpec != null && goods.isEnableSpec.length > 0) {
+            if (goods.isEnableSpec != null && goods.isEnableSpec.isNotEmpty()) {
                 criteria.andIsEnableSpecLike("%" + goods.isEnableSpec + "%")
             }
-            if (goods.isDelete != null && goods.isDelete.length > 0) {
+            if (goods.isDelete != null && goods.isDelete.isNotEmpty()) {
                 criteria.andIsDeleteLike("%" + goods.isDelete + "%")
             }
 
@@ -118,5 +177,14 @@ open class GoodsServiceImpl : GoodsService {
         val page = goodsMapper.selectByExample(example) as Page<TbGoods>
         return PageResult(page.total, page.result)
     }
+
+    @Autowired
+    lateinit var itemMapper: TbItemMapper
+    @Autowired
+    lateinit var brandMapper: TbBrandMapper
+    @Autowired
+    lateinit var itemCatMapper: TbItemCatMapper
+    @Autowired
+    lateinit var sellerMapper: TbSellerMapper
 
 }
