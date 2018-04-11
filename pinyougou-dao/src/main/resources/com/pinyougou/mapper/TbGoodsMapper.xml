@@ -123,14 +123,13 @@
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
         insert into tb_goods (id, seller_id, goods_name,
-        default_item_id, audit_status, is_marketable,
+        default_item_id, is_marketable,
         brand_id, caption, category1_id,
         category2_id, category3_id, small_pic,
         price, type_template_id, is_enable_spec,
         is_delete)
         values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
-        #{defaultItemId,jdbcType=BIGINT}, #{auditStatus,jdbcType=VARCHAR},
-        #{isMarketable,jdbcType=VARCHAR},
+        #{defaultItemId,jdbcType=BIGINT}, #{isMarketable,jdbcType=VARCHAR},
         #{brandId,jdbcType=BIGINT}, #{caption,jdbcType=VARCHAR}, #{category1Id,jdbcType=BIGINT},
         #{category2Id,jdbcType=BIGINT}, #{category3Id,jdbcType=BIGINT},
         #{smallPic,jdbcType=VARCHAR},

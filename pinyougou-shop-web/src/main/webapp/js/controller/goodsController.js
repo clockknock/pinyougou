@@ -7,6 +7,8 @@ app.controller('goodsController', function ($scope, $controller, $location, good
         var id = $location.search()["id"];
         if (id != null) {
             $scope.findOne(id);
+        }else{
+
             $scope.entity = {goods: {}, goodsDesc: {itemImages: [], specificationItems: []}};
         }
 
@@ -58,7 +60,7 @@ app.controller('goodsController', function ($scope, $controller, $location, good
     $scope.save = function () {
         $scope.entity.goodsDesc.introduction = editor.html();
         var serviceObject;//服务层对象
-        if ($scope.entity.id != null) {//如果有ID
+        if ($scope.entity.goods.id != null) {//如果有ID
             serviceObject = goodsService.update($scope.entity); //修改
         } else {
             serviceObject = goodsService.add($scope.entity);//增加
@@ -67,8 +69,8 @@ app.controller('goodsController', function ($scope, $controller, $location, good
             function (response) {
                 if (response.status) {
                     //置空当前entity
-                    $scope.initEntity();
-                    editor.html('');
+                    alert("保存成功");
+                    location.href="goods.html";
                 } else {
                     alert(response.msg);
                 }
@@ -285,7 +287,19 @@ app.controller('goodsController', function ($scope, $controller, $location, good
         return newList;
     }
 
+    //goods.html 审核状态和分类处理
     $scope.status = ["未审核", '审核通过', '审核未通过', '已关闭'];
+
+    $scope.findAllCat=function(){
+      itemCatService.findAll().success(
+          function(response){
+              $scope.allCat = [];
+              for(var i=0;i<response.length;i++){
+                  $scope.allCat[response[i].id]=response[i].name;
+              }
+          }
+      )
+    };
 
     //查看是否需要勾选
     $scope.checkAttributeValue = function (attrName, attrValue) {

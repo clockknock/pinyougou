@@ -39,9 +39,8 @@
 </head>
 
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou"
-      ng-controller="goodsController">
+      ng-controller="goodsController" ng-init="findAllCat()">
 <!-- .box-body -->
-{{status[0]}}
 
 <div class="box-header with-border">
     <h3 class="box-title">商品管理</h3>
@@ -56,9 +55,9 @@
         <div class="pull-left">
             <div class="form-group form-inline">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default" title="新建"><i
+                    <a href="goods_edit.html" class="btn btn-default" title="新建"><i
                             class="fa fa-file-o"></i> 新建
-                    </button>
+                    </a>
                     <button type="button" class="btn btn-default" title="删除"><i
                             class="fa fa-trash-o"></i> 删除
                     </button>
@@ -112,9 +111,9 @@
                 <td>{{pojo.id}}</td>
                 <td>{{pojo.goodsName}}</td>
                 <td>{{pojo.price}}</td>
-                <td>{{pojo.category1Id}}</td>
-                <td>{{pojo.category2Id}}</td>
-                <td>{{pojo.category3Id}}</td>
+                <td>{{allCat[pojo.category1Id]}}</td>
+                <td>{{allCat[pojo.category2Id]}}</td>
+                <td>{{allCat[pojo.category3Id]}}</td>
                 <td>
                    {{status[pojo.auditStatus]}}
                 </td>

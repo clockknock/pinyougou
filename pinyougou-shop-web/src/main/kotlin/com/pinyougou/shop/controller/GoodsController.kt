@@ -52,7 +52,9 @@ class GoodsController {
     fun add(@RequestBody goods: Goods): Result {
         return try {
             val name = SecurityContextHolder.getContext().authentication.name
+            //绑定商品的卖家id
             goods.goods?.sellerId = name
+
             goodsService.add(goods)
             Result(true, "增加成功")
         } catch (e: Exception) {
@@ -67,14 +69,22 @@ class GoodsController {
      * @return
      */
     @RequestMapping("/update")
-    fun update(@RequestBody goods: TbGoods): Result {
-        return try {
+    fun update(@RequestBody goods: Goods): Result {
+        val sellerId = SecurityContextHolder.getContext().authentication.name
+        //首先判断商品是否是该商家的商品
+        val goods2 = goodsService.findOne(goods.goods?.id)
+        return if (goods2.goods!!.sellerId != sellerId || !goods.goods?.sellerId.equals
+                (sellerId)) {
+            Result(false, "非法操作")
+        } else try {
             goodsService.update(goods)
             Result(true, "修改成功")
         } catch (e: Exception) {
             e.printStackTrace()
             Result(false, "修改失败")
         }
+
+
     }
 
     /**

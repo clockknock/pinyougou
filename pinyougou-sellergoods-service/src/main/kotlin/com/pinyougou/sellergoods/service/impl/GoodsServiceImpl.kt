@@ -55,6 +55,11 @@ open class GoodsServiceImpl : GoodsService {
         goods.goodsDesc?.goodsId = tbGoods?.id
         goodsDescMapper.insert(goods.goodsDesc)
 
+        updateItemList(goods, tbGoods)
+
+    }
+
+    private fun updateItemList(goods: Goods, tbGoods: TbGoods?) {
         goods.itemList?.forEach { item ->
             if ("1" == tbGoods?.isEnableSpec) {
                 //允许规格
@@ -77,7 +82,6 @@ open class GoodsServiceImpl : GoodsService {
             itemMapper.insert(item)
 
         }
-
     }
 
     /**
@@ -114,8 +118,20 @@ open class GoodsServiceImpl : GoodsService {
     /**
      * 修改
      */
-    override fun update(goods: TbGoods) {
-        goodsMapper.updateByPrimaryKey(goods)
+    override fun update(goods: Goods) {
+        val tbGoods = goods.goods
+        //更新tbGoods
+        goodsMapper.updateByPrimaryKey(tbGoods)
+        //更新goodsDesc
+        goodsDescMapper.updateByPrimaryKey(goods.goodsDesc)
+        //更新itemList
+        //先删除旧的itemList
+        val itemExample = TbItemExample()
+        itemExample.createCriteria().andGoodsIdEqualTo(tbGoods?.id)
+        itemMapper.deleteByExample(itemExample)
+
+        updateItemList(goods, tbGoods)
+
     }
 
     /**
