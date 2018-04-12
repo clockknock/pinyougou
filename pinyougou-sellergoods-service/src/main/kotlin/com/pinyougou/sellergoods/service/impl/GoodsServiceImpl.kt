@@ -28,6 +28,18 @@ open class GoodsServiceImpl : GoodsService {
     @Autowired
     lateinit var goodsDescMapper: TbGoodsDescMapper
 
+    override fun updateStatus(ids: Array<out Long>?, status: String?) {
+        if(ids==null || status ==null){
+            throw RuntimeException("请确认更新的商品")
+        }
+        ids.forEach { id ->
+            val tbGoods = goodsMapper.selectByPrimaryKey(id)
+            tbGoods.auditStatus = status
+
+           goodsMapper.updateByPrimaryKey(tbGoods)
+        }
+    }
+
     /**
      * 查询全部
      */
@@ -149,17 +161,20 @@ open class GoodsServiceImpl : GoodsService {
         //封装tbItem
         val itemExample = TbItemExample()
         itemExample.createCriteria().andGoodsIdEqualTo(id)
-        goods.itemList=itemMapper.selectByExample(itemExample)
+        goods.itemList = itemMapper.selectByExample(itemExample)
 
         return goods
     }
 
     /**
-     * 批量删除
+     * 批量删除-逻辑删除,非物理删除
      */
     override fun delete(ids: Array<Long>) {
         for (id in ids) {
-            goodsMapper.deleteByPrimaryKey(id)
+            val tbGoods = goodsMapper.selectByPrimaryKey(id)
+            tbGoods.isDelete = "1"
+            goodsMapper.updateByPrimaryKey(tbGoods)
+
         }
     }
 
@@ -169,11 +184,11 @@ open class GoodsServiceImpl : GoodsService {
 
         val example = TbGoodsExample()
         val criteria = example.createCriteria()
-
+        criteria.andIsDeleteNotEqualTo("1")
 
         if (goods != null) {
             if (goods.sellerId != null && goods.sellerId.isNotEmpty()) {
-                criteria.andSellerIdEqualTo( goods.sellerId )
+                criteria.andSellerIdEqualTo(goods.sellerId)
             }
             if (goods.goodsName != null && goods.goodsName.isNotEmpty()) {
                 criteria.andGoodsNameLike("%" + goods.goodsName + "%")

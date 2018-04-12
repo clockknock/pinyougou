@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+app.controller('goodsController' ,function($scope,$controller ,itemCatService ,goodsService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -10,7 +10,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.list=response;
 			}			
 		);
-	}    
+	};
 	
 	//分页
 	$scope.findPage=function(page,rows){			
@@ -20,7 +20,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
+	};
 	
 	//查询实体 
 	$scope.findOne=function(id){				
@@ -29,7 +29,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.entity= response;					
 			}
 		);				
-	}
+	};
 	
 	//保存 
 	$scope.save=function(){				
@@ -42,28 +42,28 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 		serviceObject.success(
 			function(response){
 				if(response.success){
-					//重新查询 
+					//重新查询
+                    $scope.deleIds=[];
 		        	$scope.reloadList();//重新加载
 				}else{
 					alert(response.message);
 				}
 			}		
 		);				
-	}
+	};
 	
-	 
-	//批量删除 
+	//批量删除
 	$scope.dele=function(){			
 		//获取选中的复选框			
-		goodsService.dele( $scope.selectIds ).success(
+		goodsService.dele( $scope.deleIds ).success(
 			function(response){
-				if(response.success){
+				if(response.status){
+					$scope.deleIds=[];
 					$scope.reloadList();//刷新列表
-					$scope.selectIds=[];
-				}						
+				}
 			}		
 		);				
-	}
+	};
 	
 	$scope.searchEntity={};//定义搜索对象 
 	
@@ -75,6 +75,35 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
-    
+	};
+
+
+    //审核状态
+    $scope.status = ["未审核", '审核通过', '审核未通过', '已关闭'];
+
+    //所有商品分类
+    $scope.findAllCat = function () {
+        itemCatService.findAll().success(
+            function (response) {
+                $scope.allCat = [];
+                for (var i = 0; i < response.length; i++) {
+                    $scope.allCat[response[i].id] = response[i].name;
+                }
+            }
+        )
+    };
+
+    $scope.updateStatus=function(status){
+        goodsService.updateStatus(status,$scope.deleIds).success(
+            function(response){
+                if(response.status){
+                    $scope.reloadList();
+                }else{
+                    alert(response.msg)
+                }
+            }
+        )
+    }
+
+
 });	

@@ -126,16 +126,15 @@
         default_item_id, is_marketable,
         brand_id, caption, category1_id,
         category2_id, category3_id, small_pic,
-        price, type_template_id, is_enable_spec,
-        is_delete)
+        price, type_template_id, is_enable_spec
+        )
         values (#{id,jdbcType=BIGINT}, #{sellerId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
         #{defaultItemId,jdbcType=BIGINT}, #{isMarketable,jdbcType=VARCHAR},
         #{brandId,jdbcType=BIGINT}, #{caption,jdbcType=VARCHAR}, #{category1Id,jdbcType=BIGINT},
         #{category2Id,jdbcType=BIGINT}, #{category3Id,jdbcType=BIGINT},
         #{smallPic,jdbcType=VARCHAR},
         #{price,jdbcType=DECIMAL}, #{typeTemplateId,jdbcType=BIGINT},
-        #{isEnableSpec,jdbcType=VARCHAR},
-        #{isDelete,jdbcType=VARCHAR})
+        #{isEnableSpec,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.pinyougou.pojo.TbGoods">
         insert into tb_goods

@@ -65,6 +65,14 @@ public interface GoodsService {
      * @param pageSize 每页记录数
      * @return
      */
-    public PageResult findPage(TbGoods goods, int pageNum, int pageSize);
+    PageResult findPage(TbGoods goods, int pageNum, int pageSize);
+
+
+    /**
+     * 更新商品描述
+     * @param ids    审核了哪些商品
+     * @param status 0:未审核 1:审核通过 2:驳回 3:关闭
+     */
+    void updateStatus(Long[] ids,String status);
 
 }

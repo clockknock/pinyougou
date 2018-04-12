@@ -44,8 +44,22 @@ app.controller("baseController",function($scope){
         }
     };
 
-
     //条件查询的实体对象
     $scope.searchEntity = {};
+
+    //审核状态
+    $scope.status = ["未审核", '审核通过', '审核未通过', '已关闭'];
+
+    //所有商品分类
+    $scope.findAllCat = function () {
+        itemCatService.findAll().success(
+            function (response) {
+                $scope.allCat = [];
+                for (var i = 0; i < response.length; i++) {
+                    $scope.allCat[response[i].id] = response[i].name;
+                }
+            }
+        )
+    };
 
 });

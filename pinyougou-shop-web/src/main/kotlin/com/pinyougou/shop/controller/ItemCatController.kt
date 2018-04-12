@@ -123,7 +123,7 @@ class ItemCatController {
         return itemCatService.findByParentId(parentId)
     }
 
-    @RequestMapping("findTypeTemplateList")
+    @RequestMapping("/findTypeTemplateList")
     fun findTypeTemplateList(): MutableList<Map<*,*>>? {
         return typeTemplateService.findTypeTemplateList()
 

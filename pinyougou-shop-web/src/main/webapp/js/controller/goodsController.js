@@ -287,20 +287,6 @@ app.controller('goodsController', function ($scope, $controller, $location, good
         return newList;
     }
 
-    //goods.html 审核状态和分类处理
-    $scope.status = ["未审核", '审核通过', '审核未通过', '已关闭'];
-
-    $scope.findAllCat=function(){
-      itemCatService.findAll().success(
-          function(response){
-              $scope.allCat = [];
-              for(var i=0;i<response.length;i++){
-                  $scope.allCat[response[i].id]=response[i].name;
-              }
-          }
-      )
-    };
-
     //查看是否需要勾选
     $scope.checkAttributeValue = function (attrName, attrValue) {
         //1.先看是不是这个规格
@@ -310,4 +296,23 @@ app.controller('goodsController', function ($scope, $controller, $location, good
         return spec.attributeValue.indexOf(attrValue) >= 0;
 
     }
+
+
+
+    //审核状态
+    $scope.status = ["未审核", '审核通过', '审核未通过', '已关闭'];
+
+    //所有商品分类
+    $scope.findAllCat = function () {
+        itemCatService.findAll().success(
+            function (response) {
+                $scope.allCat = [];
+                for (var i = 0; i < response.length; i++) {
+                    $scope.allCat[response[i].id] = response[i].name;
+                }
+            }
+        )
+    };
+
+
 });
