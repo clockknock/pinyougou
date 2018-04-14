@@ -1,6 +1,5 @@
 package com.pinyougou.manager
 
-import com.alibaba.dubbo.common.serialize.support.json.FastJsonObjectOutput
 import com.pinyougou.mapper.TbTypeTemplateMapper
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 @ContextConfiguration("classpath*:spring/applicationContext*.xml")
 class TestMapper{
     @Autowired
-    lateinit var mapper:TbTypeTemplateMapper
+    lateinit var mapper: TbTypeTemplateMapper
 
     @Test
     fun testFindTypeTemplateList(){

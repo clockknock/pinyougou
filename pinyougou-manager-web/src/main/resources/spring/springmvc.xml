@@ -25,4 +25,6 @@
 	<dubbo:application name="pinyougou-manager-web" />
 	<dubbo:registry address="${dubbo.registry}"/>
 	<dubbo:annotation package="com.pinyougou.manager.controller" />
+
+
 </beans>

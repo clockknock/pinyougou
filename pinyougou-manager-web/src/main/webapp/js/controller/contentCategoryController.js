@@ -10,7 +10,7 @@ app.controller('contentCategoryController' ,function($scope,$controller   ,conte
 				$scope.list=response;
 			}			
 		);
-	}    
+	};
 	
 	//分页
 	$scope.findPage=function(page,rows){			
@@ -20,7 +20,7 @@ app.controller('contentCategoryController' ,function($scope,$controller   ,conte
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
+	};
 	
 	//查询实体 
 	$scope.findOne=function(id){				
@@ -29,7 +29,7 @@ app.controller('contentCategoryController' ,function($scope,$controller   ,conte
 				$scope.entity= response;					
 			}
 		);				
-	}
+	};
 	
 	//保存 
 	$scope.save=function(){				
@@ -49,7 +49,7 @@ app.controller('contentCategoryController' ,function($scope,$controller   ,conte
 				}
 			}		
 		);				
-	}
+	};
 	
 	 
 	//批量删除 
@@ -63,7 +63,7 @@ app.controller('contentCategoryController' ,function($scope,$controller   ,conte
 				}						
 			}		
 		);				
-	}
+	};
 	
 	$scope.searchEntity={};//定义搜索对象 
 	

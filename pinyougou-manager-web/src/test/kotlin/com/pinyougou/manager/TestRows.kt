@@ -46,10 +46,10 @@ class TestRows {
     @Test
     fun testJsonMap() {
         var str = "[{\"spec\":{\"接口类型\":\"DVI\",\"电视屏幕尺寸\":\"40英寸\",\"能效级别\":\"二级能效\"},\"price\":\"6\",\"num\":\"19\",\"status\":\"1\",\"isDefault\":\"0\"},{\"spec\":{\"接口类型\":\"DVI\",\"电视屏幕尺寸\":\"40英寸\",\"能效级别\":\"一级能效\"},\"price\":\"66\",\"num\":\"12\",\"status\":\"1\",\"isDefault\":\"0\"},{\"spec\":{\"接口类型\":\"DVI\",\"电视屏幕尺寸\":\"41英寸\",\"能效级别\":\"二级能效\"},\"price\":\"13\",\"num\":\"123\",\"status\":\"1\",\"isDefault\":\"0\"},{\"spec\":{\"接口类型\":\"DVI\",\"电视屏幕尺寸\":\"41英寸\",\"能效级别\":\"一级能效\"},\"price\":\"12\",\"num\":\"13\",\"status\":\"1\",\"isDefault\":\"0\"},{\"spec\":{\"接口类型\":\"HDMI\",\"电视屏幕尺寸\":\"40英寸\",\"能效级别\":\"二级能效\"},\"price\":\"16\",\"num\":\"12\",\"status\":\"1\",\"isDefault\":\"0\"},{\"spec\":{\"接口类型\":\"HDMI\",\"电视屏幕尺寸\":\"40英寸\",\"能效级别\":\"一级能效\"},\"price\":\"015\",\"num\":\"2\",\"status\":\"1\",\"isDefault\":\"0\"},{\"spec\":{\"接口类型\":\"HDMI\",\"电视屏幕尺寸\":\"41英寸\",\"能效级别\":\"二级能效\"},\"price\":\"167\",\"num\":\"133\",\"status\":\"1\",\"isDefault\":\"0\"},{\"spec\":{\"接口类型\":\"HDMI\",\"电视屏幕尺寸\":\"41英寸\",\"能效级别\":\"一级能效\"},\"price\":\"133\",\"num\":\"33344\",\"status\":\"1\",\"isDefault\":\"0\"}]"
-        val parseArray = JSON.parseArray(str, TbItem::class.java)
-        parseArray.forEach { item ->
-            val specs = JSON.parseObject(item.spec) as Map<String, String>
-            val joinToString = specs.values.joinToString(separator = "")
+        val items = JSON.parseArray(str, TbItem::class.java)
+        items.forEach { item ->
+            val spec = JSON.parseObject(item.spec) as Map<String, String>
+            val joinToString = spec.values.joinToString(separator = "")
             println(joinToString)
 //            println(flatMap)
 
