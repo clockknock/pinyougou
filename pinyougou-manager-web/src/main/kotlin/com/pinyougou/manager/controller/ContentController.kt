@@ -50,12 +50,12 @@ class ContentController {
      */
     @RequestMapping("/add")
     fun add(@RequestBody content: TbContent): Result {
-        try {
+        return try {
             contentService!!.add(content)
-            return Result(true, "增加成功")
+            Result(true, "增加成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "增加失败")
+            Result(false, "增加失败")
         }
 
     }

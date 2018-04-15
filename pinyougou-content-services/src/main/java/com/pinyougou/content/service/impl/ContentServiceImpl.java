@@ -18,114 +18,115 @@ import java.util.List;
 
 /**
  * 服务实现层
- * @author Administrator
  *
+ * @author Administrator
  */
 @Service
 public class ContentServiceImpl implements ContentService {
 
-	@Autowired
-	private TbContentMapper contentMapper;
-	
-	/**
-	 * 查询全部
-	 */
-	@Override
-	public List<TbContent> findAll() {
-		return contentMapper.selectByExample(null);
-	}
+    @Autowired
+    private TbContentMapper contentMapper;
 
-	/**
-	 * 按分页查询
-	 */
-	@Override
-	public PageResult findPage(int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);		
-		Page<TbContent> page=   (Page<TbContent>) contentMapper.selectByExample(null);
-		return new PageResult(page.getTotal(), page.getResult());
-	}
+    /**
+     * 查询全部
+     */
+    @Override
+    public List<TbContent> findAll() {
+        return contentMapper.selectByExample(null);
+    }
 
-	/**
-	 * 增加
-	 */
-	@Override
-	public void add(TbContent content) {
-		contentMapper.insert(content);		
-		//清除缓存
-	}
+    /**
+     * 按分页查询
+     */
+    @Override
+    public PageResult findPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        Page<TbContent> page = (Page<TbContent>) contentMapper.selectByExample(null);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
 
-	
-	/**
-	 * 修改
-	 */
-	@Override
-	public void update(TbContent content){
-		//查询原来的分组ID
-		Long categoryId = contentMapper.selectByPrimaryKey(content.getId()).getCategoryId();
-		//清除原分组的缓存
+    /**
+     * 增加
+     */
+    @Override
+    public void add(TbContent content) {
+        contentMapper.insert(content);
+        //清除缓存
+    }
 
-		contentMapper.updateByPrimaryKey(content);
-		//清除现分组缓存
-		if(categoryId.longValue()!=content.getCategoryId().longValue()){
-		}
-		
-	}	
-	
-	/**
-	 * 根据ID获取实体
-	 * @param id
-	 * @return
-	 */
-	@Override
-	public TbContent findOne(Long id){
-		return contentMapper.selectByPrimaryKey(id);
-	}
 
-	/**
-	 * 批量删除
-	 */
-	@Override
-	public void delete(Long[] ids) {
-		for(Long id:ids){
-			//清除缓存
-			Long categoryId = contentMapper.selectByPrimaryKey(id).getCategoryId();			
+    /**
+     * 修改
+     */
+    @Override
+    public void update(TbContent content) {
+        //查询原来的分组ID
+        Long categoryId = contentMapper.selectByPrimaryKey(content.getId()).getCategoryId();
+        //清除原分组的缓存
 
-			contentMapper.deleteByPrimaryKey(id);
-		}		
-	}
-	
-	
-		@Override
-	public PageResult findPage(TbContent content, int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		
-		TbContentExample example=new TbContentExample();
-		Criteria criteria = example.createCriteria();
-		
-		if(content!=null){			
-						if(content.getTitle()!=null && content.getTitle().length()>0){
-				criteria.andTitleLike("%"+content.getTitle()+"%");
-			}
-			if(content.getUrl()!=null && content.getUrl().length()>0){
-				criteria.andUrlLike("%"+content.getUrl()+"%");
-			}
-			if(content.getPic()!=null && content.getPic().length()>0){
-				criteria.andPicLike("%"+content.getPic()+"%");
-			}
-			if(content.getStatus()!=null && content.getStatus().length()>0){
-				criteria.andStatusLike("%"+content.getStatus()+"%");
-			}
-	
-		}
-		
-		Page<TbContent> page= (Page<TbContent>)contentMapper.selectByExample(example);		
-		return new PageResult(page.getTotal(), page.getResult());
-	}
+        contentMapper.updateByPrimaryKey(content);
+        //清除现分组缓存
+        if (categoryId.longValue() != content.getCategoryId().longValue()) {
+        }
 
-	@Override
-	public List<TbContent> findByCategoryId(Long categoryId) {
-	    //TODO
+    }
+
+    /**
+     * 根据ID获取实体
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public TbContent findOne(Long id) {
+        return contentMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 批量删除
+     */
+    @Override
+    public void delete(Long[] ids) {
+        for (Long id : ids) {
+            //清除缓存
+            Long categoryId = contentMapper.selectByPrimaryKey(id).getCategoryId();
+
+            contentMapper.deleteByPrimaryKey(id);
+        }
+    }
+
+
+    @Override
+    public PageResult findPage(TbContent content, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        TbContentExample example = new TbContentExample();
+        Criteria criteria = example.createCriteria();
+
+        if (content != null) {
+            if (content.getTitle() != null && content.getTitle().length() > 0) {
+                criteria.andTitleLike("%" + content.getTitle() + "%");
+            }
+            if (content.getUrl() != null && content.getUrl().length() > 0) {
+                criteria.andUrlLike("%" + content.getUrl() + "%");
+            }
+            if (content.getPic() != null && content.getPic().length() > 0) {
+                criteria.andPicLike("%" + content.getPic() + "%");
+            }
+            if (content.getStatus() != null && content.getStatus().length() > 0) {
+                criteria.andStatusLike("%" + content.getStatus() + "%");
+            }
+
+        }
+
+        Page<TbContent> page = (Page<TbContent>) contentMapper.selectByExample(example);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    @Override
+    public List<TbContent> findByCategoryId(Long categoryId) {
+        //TODO
         return new ArrayList<TbContent>();
-	}
-	
+    }
+
 }
