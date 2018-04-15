@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/content")
 class ContentController {
     @Reference
+    private
     lateinit var contentService: ContentService
 
     @RequestMapping("/findByCategoryId")

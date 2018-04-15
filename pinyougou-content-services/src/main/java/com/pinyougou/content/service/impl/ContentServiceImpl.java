@@ -11,6 +11,7 @@ import com.pinyougou.pojo.TbContentExample.Criteria;
 import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import priv.zhong.bean.PageResult;
 
@@ -68,9 +69,6 @@ public class ContentServiceImpl implements ContentService {
         //清除原分组的缓存
 
         contentMapper.updateByPrimaryKey(content);
-        //清除现分组缓存
-        if (categoryId.longValue() != content.getCategoryId().longValue()) {
-        }
 
     }
 
@@ -119,7 +117,6 @@ public class ContentServiceImpl implements ContentService {
             if (content.getStatus() != null && content.getStatus().length() > 0) {
                 criteria.andStatusLike("%" + content.getStatus() + "%");
             }
-
         }
 
         Page<TbContent> page = (Page<TbContent>) contentMapper.selectByExample(example);
@@ -129,7 +126,8 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public List<TbContent> findByCategoryId(Long categoryId) {
         //先从redis查
-        List<TbContent> list = (List<TbContent>) redisTemplate.boundHashOps("content").get(categoryId);
+        BoundHashOperations content = redisTemplate.boundHashOps("content");
+        List<TbContent> list = (List<TbContent>) content.get(categoryId);
         if(list==null){
             //redis中没有则从mysql查出来
             TbContentExample example = new TbContentExample();
@@ -139,7 +137,7 @@ public class ContentServiceImpl implements ContentService {
             example.setOrderByClause("sort_order");
             list = contentMapper.selectByExample(example);
             //将查出来的广告信息放入redis
-            redisTemplate.boundHashOps("content").put(categoryId,list);
+            content.put(categoryId,list);
         }
 
         return list;

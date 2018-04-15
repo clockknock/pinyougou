@@ -5,18 +5,21 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <context:property-placeholder local-override="false"
                                   location="classpath*:properties/context-config.properties"/>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <dubbo:protocol name="dubbo" port="20882"></dubbo:protocol>
 
     <dubbo:application name="pinyougou-content-service"/>
     <dubbo:registry address="${dubbo.registry}"/>
-    <dubbo:annotation package="com.pinyougou.content.service.impl"/>
+    <dubbo:annotation package="com.pinyougou.content.service.impl,com.pinyougou.content.aspect"/>
 
 
 </beans>

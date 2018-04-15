@@ -21,6 +21,8 @@ class TestJedis{
         println(get)
     }
 
+
     @Autowired
+    private
     lateinit var redisTemplate: RedisTemplate<Any,Any>
 }
