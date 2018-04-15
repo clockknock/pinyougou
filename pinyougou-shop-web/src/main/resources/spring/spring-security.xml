@@ -9,7 +9,7 @@
 						http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:property-placeholder
-            location="classpath*:properties/ipconfig.properties" />
+            location="classpath*:properties/context-config.properties" />
 
 
     <http pattern="/login.html" security="none"/>

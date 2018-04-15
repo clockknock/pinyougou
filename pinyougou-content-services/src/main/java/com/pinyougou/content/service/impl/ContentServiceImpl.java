@@ -10,6 +10,7 @@ import com.pinyougou.pojo.TbContentExample;
 import com.pinyougou.pojo.TbContentExample.Criteria;
 import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import priv.zhong.bean.PageResult;
 
@@ -26,6 +27,9 @@ public class ContentServiceImpl implements ContentService {
 
     @Autowired
     private TbContentMapper contentMapper;
+    @Qualifier("redisTemplate")
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 查询全部
@@ -51,7 +55,6 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public void add(TbContent content) {
         contentMapper.insert(content);
-        //清除缓存
     }
 
 
@@ -125,8 +128,21 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public List<TbContent> findByCategoryId(Long categoryId) {
-        //TODO
-        return new ArrayList<TbContent>();
+        //先从redis查
+        List<TbContent> list = (List<TbContent>) redisTemplate.boundHashOps("content").get(categoryId);
+        if(list==null){
+            //redis中没有则从mysql查出来
+            TbContentExample example = new TbContentExample();
+            Criteria criteria = example.createCriteria();
+            criteria.andCategoryIdEqualTo(categoryId);
+            criteria.andStatusEqualTo("1");
+            example.setOrderByClause("sort_order");
+            list = contentMapper.selectByExample(example);
+            //将查出来的广告信息放入redis
+            redisTemplate.boundHashOps("content").put(categoryId,list);
+        }
+
+        return list;
     }
 
 }
