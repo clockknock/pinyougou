@@ -13,7 +13,7 @@ import org.springframework.data.solr.core.query.SimpleQuery
  * @author 钟未鸣
  * @date 2018/4/17
  */
-@Service
+@Service(timeout = 5000)
 class ItemSearchServiceImpl : ItemSearchService{
     @Autowired
     private lateinit var solrTemplate: SolrTemplate

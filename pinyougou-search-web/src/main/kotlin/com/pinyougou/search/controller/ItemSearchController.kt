@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
  * @date 2018/4/17
  */
 @RestController
-@RequestMapping("itemSearch")
+@RequestMapping("itemsearch")
 class ItemSearchController{
 
     @Reference
