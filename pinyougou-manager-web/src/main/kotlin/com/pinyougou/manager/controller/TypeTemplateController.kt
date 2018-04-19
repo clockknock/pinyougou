@@ -18,6 +18,7 @@ import priv.zhong.bean.Result
 @RequestMapping("/typeTemplate")
 class TypeTemplateController {
     @Reference
+    private
     lateinit var typeTemplateService: TypeTemplateService
 
     /**
@@ -90,19 +91,18 @@ class TypeTemplateController {
      */
     @RequestMapping("/delete")
     fun delete(ids: Array<Long>): Result {
-        try {
+        return try {
             typeTemplateService.delete(ids)
-            return Result(true, "删除成功")
+            Result(true, "删除成功")
         } catch (e: Exception) {
             e.printStackTrace()
-            return Result(false, "删除失败")
+            Result(false, "删除失败")
         }
 
     }
 
     /**
      * 查询+分页
-     * @param brand
      * @param page
      * @param rows
      * @return

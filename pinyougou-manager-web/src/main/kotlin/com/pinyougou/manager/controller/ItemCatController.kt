@@ -2,7 +2,6 @@ package com.pinyougou.manager.controller
 
 import com.alibaba.dubbo.config.annotation.Reference
 import com.pinyougou.pojo.TbItemCat
-import com.pinyougou.pojo.TbTypeTemplate
 import com.pinyougou.sellergoods.service.ItemCatService
 import com.pinyougou.sellergoods.service.TypeTemplateService
 import org.springframework.web.bind.annotation.RequestBody
